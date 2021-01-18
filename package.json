@@ -9,7 +9,7 @@
     "typescript": "^4.1.3"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --help",
     "changelog": "gren changelog --override --generate",
     "lint": "eslint --ext .ts src",
     "lint-watch": "onchange 'src/**/*.ts' -- eslint {{file}}",
