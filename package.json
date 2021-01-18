@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Tool to generate, and optionally download, a video of a countdown clock.",
   "main": "index.html",
-  "dependencies": {},
+  "dependencies": {
+    "@ffmpeg/core": "^0.8.5",
+    "@ffmpeg/ffmpeg": "^0.9.7",
+    "mp4-mjpeg": "0.0.2"
+  },
   "devDependencies": {
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"
