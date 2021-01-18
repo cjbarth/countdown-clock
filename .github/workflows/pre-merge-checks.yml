@@ -2,13 +2,13 @@
 
 name: CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,14 +28,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run build --if-present
-#       - run: npm test
+      - run: npm test
 
       - name: Prettier Action
         run: npm run prettier-check
