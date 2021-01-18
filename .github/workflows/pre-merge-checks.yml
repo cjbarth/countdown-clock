@@ -38,4 +38,4 @@ jobs:
 #       - run: npm test
 
       - name: Prettier Action
-        run: npm run prettier-format
+        run: npm run prettier-check
