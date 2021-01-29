@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowUmdGlobalAccess": true,
+    "sourceMap": true,
+    "module": "es6",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "outDir": "lib",
+    "lib": ["dom", "es6"],
+    "strict": true
+  },
+  "include": ["src", "types"],
+  "compileOnSave": true
+}
