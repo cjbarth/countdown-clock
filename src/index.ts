@@ -63,9 +63,9 @@ const getTime = (seconds: number, options: ClockOptions): string => {
   const date = new Date(Date.UTC(0, 0, 0, hours, minutes, seconds, 0));
 
   const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: "number",
-    minute: "number",
-    second: "number",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
     timeZone: "UTC",
     hour12: false,
   };
