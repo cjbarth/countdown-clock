@@ -25,7 +25,7 @@ export class Clock {
         delete this.hMidpoint;
         return (this.hMidpoint = this.hResolution / 2);
       },
-       configurable: true,
+      configurable: true,
     });
 
     Object.defineProperty(this.options, "vMidpoint", {
@@ -34,7 +34,6 @@ export class Clock {
         return (this.vMidpoint = this.vResolution / 2);
       },
       configurable: true,
-
     });
   }
 
@@ -68,7 +67,7 @@ export class Clock {
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
-  drawTicks() {
+  drawTicks(): void {
     const x = this.options.hMidpoint - this.options.tickWidth / 2;
     const y = this.options.vMidpoint - this.options.clockRadius;
 
