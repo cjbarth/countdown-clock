@@ -10,6 +10,10 @@ export interface ClockOptions {
   tickHeight: number;
   tickWidth: number;
   tickCount: number;
+  tickLabels: string[];
+  tickLabelsCount: number;
+  tickLabelCssFont: string;
+  tickLabelRadius: number;
 }
 
 export class Clock {
@@ -35,6 +39,14 @@ export class Clock {
       },
       configurable: true,
     });
+
+    Object.defineProperty(this.options, "tickLabelsCount", {
+      get: function () {
+        delete this.tickLabelsCount;
+        return (this.tickLabelsCount = this.tickLabels.length);
+      },
+      configurable: true,
+    });
   }
 
   drawFrame(): void {
@@ -54,11 +66,13 @@ export class Clock {
   }
 
   drawHand(radians: number): void {
+    const someValue = 15;
+
     this.ctx.beginPath();
     this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
     this.ctx.rotate(radians);
     this.ctx.translate(-this.options.hMidpoint, -this.options.vMidpoint);
-    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + 15);
+    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + someValue);
     this.ctx.lineTo(this.options.hMidpoint, this.options.handLength);
     this.ctx.rotate(-radians);
     this.ctx.lineWidth = this.options.lineWidth;
@@ -71,11 +85,7 @@ export class Clock {
     const x = this.options.hMidpoint - this.options.tickWidth / 2;
     const y = this.options.vMidpoint - this.options.clockRadius;
 
-    for (
-      let r = 0;
-      r < Math.TAU;
-      r += (1 / this.options.tickCount) * Math.TAU
-    ) {
+    for (let r = 0; r < Math.TAU; r += (1 / this.options.tickCount) * Math.TAU) {
       this.ctx.beginPath();
       this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
       this.ctx.rotate(r);
@@ -84,6 +94,30 @@ export class Clock {
       this.ctx.rotate(-r);
       this.ctx.closePath();
       this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+  }
+
+  drawNumbers(): void {
+    this.ctx.font = this.options.tickLabelCssFont;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+
+    for (let i = 0; i < this.options.tickLabelsCount; i++) {
+      // Start writing labels at the top of the clock
+      const x =
+        this.options.hMidpoint +
+        this.options.tickLabelRadius *
+          Math.cos((Math.TAU / this.options.tickLabelsCount) * i - Math.TAU / 4);
+      let y =
+        this.options.vMidpoint +
+        this.options.tickLabelRadius *
+          Math.sin((Math.TAU / this.options.tickLabelsCount) * i - Math.TAU / 4);
+
+      const textMeasurements = this.ctx.measureText(this.options.tickLabels[i]);
+      y +=
+        (textMeasurements.actualBoundingBoxAscent + textMeasurements.actualBoundingBoxDescent) / 2;
+      //   y += (textMeasurements.fontBoundingBoxAscent + textMeasurements.fontBoundingBoxDescent) / 2;
+      this.ctx.fillText(this.options.tickLabels[i], x, y);
     }
   }
 }

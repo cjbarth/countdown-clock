@@ -26,6 +26,9 @@ const getOptions = (): clock.ClockOptions => {
     tickCount: 5,
     tickHeight: 30,
     tickWidth: 10,
+    tickLabels: ["a", "IV", "V", "z", "zz"],
+    tickLabelCssFont: "italic 40px Calibri",
+    tickLabelRadius: 335,
   } as clock.ClockOptions;
 
   return options;
@@ -53,10 +56,7 @@ const getTime = (seconds: number, options: clock.ClockOptions): string => {
     hour12: true,
   };
 
-  const timeParts = new Intl.DateTimeFormat(
-    options.locale,
-    timeOptions
-  ).formatToParts(date);
+  const timeParts = new Intl.DateTimeFormat(options.locale, timeOptions).formatToParts(date);
 
   return timeParts
     .map((value) => {
@@ -77,3 +77,4 @@ const myClock = new clock.Clock(getCanvasContext(), getOptions());
 myClock.drawFrame();
 myClock.drawHand(1);
 myClock.drawTicks();
+myClock.drawNumbers();

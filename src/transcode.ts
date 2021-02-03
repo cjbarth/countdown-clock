@@ -24,9 +24,7 @@ const addAudio = async (filePath: string): Promise<void> => {
   ffmpeg.FS("writeFile", "audio.ogg", await FFmpeg.fetchFile(filePath));
 };
 
-const downloadVideo = async (
-  statusCallback: (statusMessage: string) => void
-): Promise<void> => {
+const downloadVideo = async (statusCallback: (statusMessage: string) => void): Promise<void> => {
   statusCallback("Loading ffmpeg-core.js");
   await ffmpeg.load();
   statusCallback("Loading data");
