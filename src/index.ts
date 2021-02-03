@@ -78,3 +78,4 @@ myClock.drawFrame();
 myClock.drawHand(1);
 myClock.drawTicks();
 myClock.drawNumbers();
+myClock.drawColorWedge(1.5);

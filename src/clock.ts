@@ -56,9 +56,7 @@ export class Clock {
       this.options.vMidpoint,
       this.options.clockRadius,
       0,
-      Math.TAU,
-      true
-    );
+      Math.TAU);
     this.ctx.clip();
     this.ctx.lineWidth = this.options.lineWidth;
     this.ctx.stroke();
@@ -66,7 +64,7 @@ export class Clock {
   }
 
   drawHand(radians: number): void {
-    const someValue = 15;
+    const someValue = 15; // This is the value that the hand goes to on the other side of the center, like a real clock hand
 
     this.ctx.beginPath();
     this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
@@ -119,5 +117,21 @@ export class Clock {
       //   y += (textMeasurements.fontBoundingBoxAscent + textMeasurements.fontBoundingBoxDescent) / 2;
       this.ctx.fillText(this.options.tickLabels[i], x, y);
     }
+  }
+
+  drawColorWedge(arcRadians: number): void {
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint);
+    this.ctx.arc(
+      this.options.hMidpoint,
+      this.options.vMidpoint,
+      this.options.clockRadius,
+      0,
+      arcRadians);
+    this.ctx.clip();
+    this.ctx.lineWidth = this.options.lineWidth;
+    this.ctx.fill();
+    // this.ctx.stroke();
+    this.ctx.closePath();
   }
 }
