@@ -13,7 +13,10 @@ export interface ClockOptions {
   tickLabels: string[];
   tickLabelsCount: number;
   tickLabelCssFont: string;
+  tickLabelColor: string;
   tickLabelRadius: number;
+  labelCssFont: string;
+  color: string;
 }
 
 export class Clock {
@@ -56,21 +59,20 @@ export class Clock {
       this.options.vMidpoint,
       this.options.clockRadius,
       0,
-      Math.TAU);
+      Math.TAU
+    );
     this.ctx.clip();
     this.ctx.lineWidth = this.options.lineWidth;
     this.ctx.stroke();
     this.ctx.closePath();
   }
 
-  drawHand(radians: number): void {
-    const someValue = 15; // This is the value that the hand goes to on the other side of the center, like a real clock hand
-
+  drawHand(radians: number, tailLength: number): void {
     this.ctx.beginPath();
     this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
     this.ctx.rotate(radians);
     this.ctx.translate(-this.options.hMidpoint, -this.options.vMidpoint);
-    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + someValue);
+    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + tailLength);
     this.ctx.lineTo(this.options.hMidpoint, this.options.handLength);
     this.ctx.rotate(-radians);
     this.ctx.lineWidth = this.options.lineWidth;
@@ -119,7 +121,7 @@ export class Clock {
     }
   }
 
-  drawColorWedge(arcRadians: number): void {
+  drawColorWedge(arcRadians: number, fillColor?: string, outlineColor?: string): void {
     this.ctx.beginPath();
     this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint);
     this.ctx.arc(
@@ -127,11 +129,39 @@ export class Clock {
       this.options.vMidpoint,
       this.options.clockRadius,
       0,
-      arcRadians);
+      arcRadians
+    );
+
+    // The wrapping `save`/`restore` is to undo the effects of the `clip`.
+    this.ctx.save();
     this.ctx.clip();
-    this.ctx.lineWidth = this.options.lineWidth;
-    this.ctx.fill();
-    // this.ctx.stroke();
     this.ctx.closePath();
+    this.ctx.lineWidth = this.options.lineWidth;
+    this.ctx.fillStyle = fillColor || this.options.color;
+    this.ctx.fill();
+    this.ctx.fillStyle = this.options.color;
+    this.ctx.strokeStyle = outlineColor || this.options.color;
+    this.ctx.stroke();
+    this.ctx.strokeStyle = this.options.color;
+    this.ctx.restore();
+  }
+
+  drawCenterText(text: string, color?: string): void {
+    this.ctx.font = this.options.labelCssFont;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillStyle = color || this.options.color;
+    this.ctx.fillText(
+      text,
+      this.options.hMidpoint,
+      this.options.vMidpoint,
+      this.options.clockRadius * 2
+    );
+    this.ctx.fillStyle = this.options.color;
+  }
+
+  clear(): void {
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.clearRect(0, 0, this.options.hResolution, this.options.vResolution);
   }
 }

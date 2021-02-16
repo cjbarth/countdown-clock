@@ -1,4 +1,5 @@
 import * as clock from "./clock";
+import * as transcode from "./transcode";
 
 Math.TAU = Math.PI * 2;
 
@@ -15,6 +16,10 @@ const getCanvasContext = (): CanvasRenderingContext2D => {
   }
 };
 
+const getDownloadButton = (): HTMLButtonElement => {
+  return document.getElementById("download") as HTMLButtonElement;
+};
+
 const getOptions = (): clock.ClockOptions => {
   const options = {
     hResolution: 1920,
@@ -28,7 +33,10 @@ const getOptions = (): clock.ClockOptions => {
     tickWidth: 10,
     tickLabels: ["a", "IV", "V", "z", "zz"],
     tickLabelCssFont: "italic 40px Calibri",
+    tickLabelColor: "purple",
     tickLabelRadius: 335,
+    labelCssFont: "40px Calibri",
+    color: "black",
   } as clock.ClockOptions;
 
   return options;
@@ -67,15 +75,40 @@ const getTime = (seconds: number, options: clock.ClockOptions): string => {
     .trim();
 };
 
-const t = getTime(12345, getOptions());
-console.log(t);
-
 sizeCanvas(getOptions());
 
 const myClock = new clock.Clock(getCanvasContext(), getOptions());
 
-myClock.drawFrame();
-myClock.drawHand(1);
-myClock.drawTicks();
-myClock.drawNumbers();
-myClock.drawColorWedge(1.5);
+transcode
+  .init((status) => {
+    console.log(status);
+  })
+  .then(() => {
+    for (let i = 0; i < 120; i++) {
+      setTimeout(function () {
+        const t = getTime(12345 + i, getOptions());
+
+        myClock.clear();
+        myClock.drawFrame();
+        myClock.drawHand(1, 15);
+        myClock.drawTicks();
+        myClock.drawNumbers();
+        myClock.drawColorWedge(1.5, "blue", "red");
+        myClock.drawCenterText(t, "orange");
+
+        // Save off the image for mp4
+        transcode.addFrame(getCanvas(), (status) => {
+          console.log(status);
+        });
+      }, 10 * i);
+    }
+  });
+
+getDownloadButton().addEventListener("click", () => {
+  transcode.downloadVideo((status) => {
+    console.log(status);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+});
