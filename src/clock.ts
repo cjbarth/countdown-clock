@@ -17,6 +17,7 @@ export interface ClockOptions {
   tickLabelRadius: number;
   labelCssFont: string;
   color: string;
+  backgroundColor: string;
 }
 
 export class Clock {
@@ -52,7 +53,8 @@ export class Clock {
     });
   }
 
-  drawFrame(): void {
+  drawFrame(color?: string): void {
+    this.ctx.fillStyle = color || this.options.color;
     this.ctx.beginPath();
     this.ctx.arc(
       this.options.hMidpoint,
@@ -67,7 +69,8 @@ export class Clock {
     this.ctx.closePath();
   }
 
-  drawHand(radians: number, tailLength: number): void {
+  drawHand(radians: number, tailLength: number, color?: string): void {
+    this.ctx.fillStyle = color || this.options.color;
     this.ctx.beginPath();
     this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
     this.ctx.rotate(radians);
@@ -81,10 +84,11 @@ export class Clock {
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
-  drawTicks(): void {
+  drawTicks(color?: string): void {
     const x = this.options.hMidpoint - this.options.tickWidth / 2;
     const y = this.options.vMidpoint - this.options.clockRadius;
 
+    this.ctx.fillStyle = color || this.options.color;
     for (let r = 0; r < Math.TAU; r += (1 / this.options.tickCount) * Math.TAU) {
       this.ctx.beginPath();
       this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
@@ -97,8 +101,9 @@ export class Clock {
     }
   }
 
-  drawNumbers(): void {
+  drawNumbers(color?: string): void {
     this.ctx.font = this.options.tickLabelCssFont;
+    this.ctx.fillStyle = color || this.options.color;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
 
@@ -139,10 +144,8 @@ export class Clock {
     this.ctx.lineWidth = this.options.lineWidth;
     this.ctx.fillStyle = fillColor || this.options.color;
     this.ctx.fill();
-    this.ctx.fillStyle = this.options.color;
     this.ctx.strokeStyle = outlineColor || this.options.color;
     this.ctx.stroke();
-    this.ctx.strokeStyle = this.options.color;
     this.ctx.restore();
   }
 
@@ -157,11 +160,12 @@ export class Clock {
       this.options.vMidpoint,
       this.options.clockRadius * 2
     );
-    this.ctx.fillStyle = this.options.color;
   }
 
   clear(): void {
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.clearRect(0, 0, this.options.hResolution, this.options.vResolution);
+    this.ctx.fillStyle = this.options.backgroundColor;
+    this.ctx.fillRect(0, 0, this.options.hResolution, this.options.vResolution);
   }
 }

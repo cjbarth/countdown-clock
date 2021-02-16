@@ -37,6 +37,7 @@ const getOptions = (): clock.ClockOptions => {
     tickLabelRadius: 335,
     labelCssFont: "40px Calibri",
     color: "black",
+    backgroundColor: "pink",
   } as clock.ClockOptions;
 
   return options;
@@ -105,10 +106,11 @@ transcode
   });
 
 getDownloadButton().addEventListener("click", () => {
-  transcode.downloadVideo((status) => {
-    console.log(status);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+  transcode
+    .downloadVideo((status) => {
+      console.log(status);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });

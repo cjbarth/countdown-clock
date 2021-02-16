@@ -6,9 +6,10 @@ type StatusCallback = (statusMessage: string) => void;
 // const { createFFmpeg, fetchFile } = FFmpeg;
 const ffmpeg = FFmpeg.createFFmpeg({ log: true });
 
-let frameCount = 0;
-const getFrameNumber = (frameNumber: number) => {
-  return `000${frameNumber}`.slice(-4);
+const frames: string[] = [];
+const getFrameFileName = (frameNumber: number) => {
+  const frameIndex = `000${frameNumber}`.slice(-4);
+  return `tmp.${frameIndex}.png`;
 };
 
 const init = async (statusCallback: StatusCallback): Promise<void> => {
@@ -18,16 +19,17 @@ const init = async (statusCallback: StatusCallback): Promise<void> => {
 };
 
 const addFrame = (canvasElem: HTMLCanvasElement, statusCallback: StatusCallback): void => {
-  frameCount += 1;
+  const frameCount = frames.length;
   if (frameCount > 9999) {
     // We have to support enough frames to have at least one per pixel on the circumference of the circle
     throw new Error("Too many frames. Only 10,000 frames supported.");
   }
-  const frameNum = getFrameNumber(frameCount);
+  const frameFileName = getFrameFileName(frameCount);
   const image = canvasElem.toDataURL("image/png");
   const myUint8Array = convertDataURIToBinary(image);
-  ffmpeg.FS("writeFile", `tmp.${frameNum}.png`, myUint8Array);
-  statusCallback("Frame added...");
+  ffmpeg.FS("writeFile", frameFileName, myUint8Array);
+  frames.push(frameFileName);
+  statusCallback("Frame " + frameFileName + " added...");
 };
 
 const addAudio = async (filePath: string): Promise<void> => {
@@ -69,14 +71,14 @@ const downloadVideo = async (statusCallback: StatusCallback): Promise<void> => {
   );
   statusCallback("ffmpeg run done");
   const data = ffmpeg.FS("readFile", "out.mp4");
-  console.log(data);
+  ffmpeg.FS("unlink", "out.mp4");
   // ffmpeg.FS("unlink", "audio.ogg");
 
-  // for (let i = 0; i < frameCount; i += 1) {
-  //   const frameNumber = getFrameNumber(frameCount);
-
-  //   ffmpeg.FS("unlink", `tmp.${frameNumber}.png`);
-  // }
+  frames.forEach((frameFileName) => {
+    ffmpeg.FS("unlink", frameFileName);
+  });
+  // Clear the list of framess
+  frames.splice(0, frames.length);
 
   const fileName = "countdown.mp4";
   const blob = new Blob([data.buffer], { type: "video/mp4" });
