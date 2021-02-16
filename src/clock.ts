@@ -18,11 +18,13 @@ export interface ClockOptions {
   labelCssFont: string;
   color: string;
   backgroundColor: string;
+  countdownSeconds: number;
+  radiansPerSecond: number;
 }
 
 export class Clock {
   ctx: CanvasRenderingContext2D;
-  options: ClockOptions;
+  public options: ClockOptions;
 
   constructor(ctx: CanvasRenderingContext2D, options: ClockOptions) {
     this.ctx = ctx;
@@ -48,6 +50,15 @@ export class Clock {
       get: function () {
         delete this.tickLabelsCount;
         return (this.tickLabelsCount = this.tickLabels.length);
+      },
+      configurable: true,
+    });
+
+    Object.defineProperty(this.options, "radiansPerSecond", {
+      get: function () {
+        delete this.radiansPerSecond;
+        return (this.radiansPerSecond =
+          Math.TAU / Math.max(this.clockRadius, this.countdownSeconds));
       },
       configurable: true,
     });

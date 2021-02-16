@@ -1,5 +1,4 @@
 import { convertDataURIToBinary } from "./utilities";
-import { saveAs } from "file-saver";
 
 type StatusCallback = (statusMessage: string) => void;
 
@@ -36,42 +35,40 @@ const addAudio = async (filePath: string): Promise<void> => {
   ffmpeg.FS("writeFile", "audio.ogg", await FFmpeg.fetchFile(filePath));
 };
 
-const downloadVideo = async (statusCallback: StatusCallback): Promise<void> => {
-  // statusCallback("Loading data");
-
-  // for (let i = 0; i < 60; i += 1) {
-  //   const num = `00${i}`.slice(-3);
-  //   // This should write a Uint8Array
-  //   ffmpeg.FS(
-  //     "writeFile",
-  //     `tmp.${num}.png`,
-  //     await FFmpeg.fetchFile(`../assets/triangle/tmp.${num}.png`)
-  //   );
-  // }
+const transcode = async (
+  durationSeconds: number,
+  hasAudio: boolean,
+  statusCallback: StatusCallback
+): Promise<Uint8Array> => {
   statusCallback("Start transcoding");
 
   // We have to switch here if we don't have audio; it will be a different command in that case
-  await ffmpeg.run(
+  const cliArgs: string[] = [
     "-framerate",
-    "1",
+    (frames.length / durationSeconds).toString(10),
     "-pattern_type",
     "glob",
     "-i",
     "*.png",
-    // "-i",
-    // "audio.ogg",
-    "-c:a",
-    "copy",
-    "-shortest",
-    "-c:v",
-    "libx264",
-    "-pix_fmt",
-    "yuv420p",
-    "out.mp4"
+  ];
+
+  if (hasAudio) {
+    cliArgs.push(...["-i", "audio.ogg"]);
+  }
+
+  cliArgs.push(
+    ...["-c:a", "copy", "-shortest", "-c:v", "libx264", "-pix_fmt", "yuv420p", "out.mp4"]
   );
+
+  await ffmpeg.run(...cliArgs);
   statusCallback("ffmpeg run done");
   const data = ffmpeg.FS("readFile", "out.mp4");
   ffmpeg.FS("unlink", "out.mp4");
+
+  return data;
+};
+
+const clearData = () => {
   // ffmpeg.FS("unlink", "audio.ogg");
 
   frames.forEach((frameFileName) => {
@@ -79,10 +76,6 @@ const downloadVideo = async (statusCallback: StatusCallback): Promise<void> => {
   });
   // Clear the list of framess
   frames.splice(0, frames.length);
-
-  const fileName = "countdown.mp4";
-  const blob = new Blob([data.buffer], { type: "video/mp4" });
-  saveAs(blob, fileName);
 };
 
-export { init, addFrame, addAudio, downloadVideo };
+export { init, addFrame, addAudio, transcode };

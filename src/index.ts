@@ -1,5 +1,6 @@
 import * as clock from "./clock";
 import * as transcode from "./transcode";
+import { saveAs } from "file-saver";
 
 Math.TAU = Math.PI * 2;
 
@@ -38,6 +39,7 @@ const getOptions = (): clock.ClockOptions => {
     labelCssFont: "40px Calibri",
     color: "black",
     backgroundColor: "pink",
+    countdownSeconds: 60 * 5,
   } as clock.ClockOptions;
 
   return options;
@@ -83,15 +85,24 @@ const myClock = new clock.Clock(getCanvasContext(), getOptions());
 transcode
   .init((status) => {
     console.log(status);
+    console.log(myClock.options.radiansPerSecond);
   })
   .then(() => {
-    for (let i = 0; i < 120; i++) {
+    // Need to figure out how to correlate seconds with frames so we can draw the correct number of frames
+    // Either one per second, or one per pixel on the circumfrunce
+    for (let frame = 0; frame < myClock.options.countdownSeconds; frame++) {
       setTimeout(function () {
-        const t = getTime(12345 + i, getOptions());
+        const t = getTime(
+          12345 +
+            Math.round(
+              (frame * myClock.options.radiansPerSecond) / myClock.options.countdownSeconds
+            ),
+          getOptions()
+        );
 
         myClock.clear();
         myClock.drawFrame();
-        myClock.drawHand(1, 15);
+        myClock.drawHand(frame * myClock.options.radiansPerSecond, 15);
         myClock.drawTicks();
         myClock.drawNumbers();
         myClock.drawColorWedge(1.5, "blue", "red");
@@ -101,14 +112,18 @@ transcode
         transcode.addFrame(getCanvas(), (status) => {
           console.log(status);
         });
-      }, 10 * i);
+      }, 10 * frame);
     }
   });
 
 getDownloadButton().addEventListener("click", () => {
   transcode
-    .downloadVideo((status) => {
+    .transcode(myClock.options.countdownSeconds, false, (status) => {
       console.log(status);
+    })
+    .then((video) => {
+      const blob = new Blob([video.buffer], { type: "video/mp4" });
+      saveAs(blob, "countdown.mp4");
     })
     .catch((err) => {
       console.error(err);
