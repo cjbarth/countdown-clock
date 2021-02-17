@@ -25,6 +25,9 @@ export interface ClockOptions {
 export class Clock {
   ctx: CanvasRenderingContext2D;
   public options: ClockOptions;
+  readonly frameCount: number;
+  readonly secondsPerFrame: number;
+  private radiansPerFrame: number;
 
   constructor(ctx: CanvasRenderingContext2D, options: ClockOptions) {
     this.ctx = ctx;
@@ -54,17 +57,12 @@ export class Clock {
       configurable: true,
     });
 
-    Object.defineProperty(this.options, "radiansPerSecond", {
-      get: function () {
-        delete this.radiansPerSecond;
-        return (this.radiansPerSecond =
-          Math.TAU / Math.max(this.clockRadius, this.countdownSeconds));
-      },
-      configurable: true,
-    });
+    this.frameCount = Math.max(this.options.clockRadius * Math.TAU, this.options.countdownSeconds);
+    this.radiansPerFrame = Math.TAU / this.frameCount;
+    this.secondsPerFrame = this.options.countdownSeconds / this.frameCount;
   }
 
-  drawFrame(color?: string): void {
+  drawEdge(color?: string): void {
     this.ctx.fillStyle = color || this.options.color;
     this.ctx.beginPath();
     this.ctx.arc(
@@ -178,5 +176,44 @@ export class Clock {
     this.ctx.clearRect(0, 0, this.options.hResolution, this.options.vResolution);
     this.ctx.fillStyle = this.options.backgroundColor;
     this.ctx.fillRect(0, 0, this.options.hResolution, this.options.vResolution);
+  }
+
+  getTimeText(seconds: number): string {
+    const hours = Math.trunc(seconds / 3600);
+    seconds = seconds % 3600;
+    const minutes = Math.trunc(seconds / 60);
+    seconds = seconds % 60;
+
+    const date = new Date(Date.UTC(0, 0, 0, hours, minutes, seconds, 0));
+
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZone: "UTC",
+      hour12: true,
+    };
+
+    const timeParts = new Intl.DateTimeFormat(this.options.locale, timeOptions).formatToParts(date);
+
+    return timeParts
+      .map((value) => {
+        // Leave off the dayPeriod so we can get a raw time without extra 0s
+        return value.type === "dayPeriod" ? "" : value.value;
+      })
+      .join("")
+      .trim();
+  }
+
+  renderFrame(frameNumber: number): void {
+    const t = this.getTimeText(12345 + Math.round(frameNumber * this.secondsPerFrame));
+
+    this.clear();
+    this.drawEdge();
+    this.drawHand(frameNumber * this.radiansPerFrame, 15);
+    this.drawTicks();
+    this.drawNumbers();
+    this.drawColorWedge(1.5, "blue", "red");
+    this.drawCenterText(t, "orange");
   }
 }
