@@ -19,7 +19,7 @@
   "author": "Chris Barth <chrisjbarth@hotmail.com>",
   "main": "index.html",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && webpack",
     "changelog": "gren changelog --override --generate",
     "lint": "eslint --ext .ts .",
     "lint-watch": "onchange -k -p 100 \"**/*.ts\" -- eslint {{file}}",
@@ -42,7 +42,6 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.1",
-    "@types/filesaver": "0.0.30",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "@vercel/ncc": "^0.27.0",

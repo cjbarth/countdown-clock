@@ -55,27 +55,27 @@ sizeCanvas(getOptions());
 
 const myClock = new clock.Clock(getCanvasContext(), getOptions());
 
-transcode
-  .init((status) => {
-    console.log(status);
-    console.log(myClock.options.radiansPerSecond);
-  })
-  .then(() => {
-    // Need to figure out how to correlate seconds with frames so we can draw the correct number of frames
-    // Either one per second, or one per pixel on the circumfrunce
-    for (let frame = 0; frame < myClock.frameCount; frame++) {
-      setTimeout(function () {
-        myClock.renderFrame(frame);
-
-        // Save off the image for mp4
-        transcode.addFrame(getCanvas(), (status) => {
-          console.log(status);
-        });
-      }, 10 * frame);
-    }
-  });
-
 getDownloadButton().addEventListener("click", () => {
+  transcode
+    .init((status) => {
+      console.log(status);
+      console.log(myClock.options.radiansPerSecond);
+    })
+    .then(() => {
+      // Need to figure out how to correlate seconds with frames so we can draw the correct number of frames
+      // Either one per second, or one per pixel on the circumfrunce
+      for (let frame = 0; frame < myClock.frameCount; frame++) {
+        setTimeout(function () {
+          myClock.renderFrame(frame);
+
+          // Save off the image for mp4
+          transcode.addFrame(getCanvas(), (status) => {
+            console.log(status);
+          });
+        }, 10 * frame);
+      }
+    });
+
   transcode
     .transcode(myClock.options.countdownSeconds, false, (status) => {
       console.log(status);
