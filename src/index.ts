@@ -23,12 +23,12 @@ const getDownloadButton = (): HTMLButtonElement => {
 
 const getOptions = (): clock.ClockOptions => {
   const options = {
-    hResolution: 1920,
-    vResolution: 1080,
+    hResolution: parseInt(document.getElementById("height")?.nodeValue ?? "1920", 10),
+    vResolution: parseInt(document.getElementById("width")?.nodeValue ?? "1080", 10),
     clockRadius: 432,
     lineWidth: 10,
     locale: "en-US",
-    handLength: 200,
+    handLength: parseInt(document.getElementById("handLength")?.nodeValue ?? "200", 10),
     tickCount: 5,
     tickHeight: 30,
     tickWidth: 10,
@@ -51,9 +51,17 @@ const sizeCanvas = (options: clock.ClockOptions): void => {
   canvas.width = options.hResolution;
 };
 
-sizeCanvas(getOptions());
-
 const myClock = new clock.Clock(getCanvasContext(), getOptions());
+
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})
+
+
+sizeCanvas(getOptions());
+$('[control="bootstrap-colorpicker"]').colorpicker();
+
 
 getDownloadButton().addEventListener("click", () => {
   transcode
