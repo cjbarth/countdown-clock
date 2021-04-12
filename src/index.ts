@@ -53,12 +53,6 @@ const sizeCanvas = (options: clock.ClockOptions): void => {
 
 const myClock = new clock.Clock(getCanvasContext(), getOptions());
 
-var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-  return new bootstrap.Popover(popoverTriggerEl)
-})
-
-
 sizeCanvas(getOptions());
 $('[control="bootstrap-colorpicker"]').colorpicker();
 
