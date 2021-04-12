@@ -1,6 +1,7 @@
 import * as clock from "./clock";
 import * as transcode from "./transcode";
 import { saveAs } from "file-saver";
+// import * as bootstrap from "bootstrap";
 
 Math.TAU = Math.PI * 2;
 
@@ -30,7 +31,7 @@ const getOptions = (): clock.ClockOptions => {
     locale: "en-US",
     handLength: parseInt(document.getElementById("handLength")?.nodeValue ?? "200", 10),
     tickCount: 5,
-    tickHeight: 30,
+    tickLength: 30,
     tickWidth: 10,
     tickLabels: ["a", "IV", "V", "z", "zz"],
     tickLabelCssFont: "italic 40px Calibri",
@@ -54,8 +55,10 @@ const sizeCanvas = (options: clock.ClockOptions): void => {
 const myClock = new clock.Clock(getCanvasContext(), getOptions());
 
 sizeCanvas(getOptions());
-$('[control="bootstrap-colorpicker"]').colorpicker();
-
+const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl);
+});
 
 getDownloadButton().addEventListener("click", () => {
   transcode

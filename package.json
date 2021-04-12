@@ -41,7 +41,7 @@
     "mp4-mjpeg": "0.0.2"
   },
   "devDependencies": {
-    "@types/bootstrap-colorpicker": "^2.5.3",
+    "@types/bootstrap": "^5.0.12",
     "@types/file-saver": "^2.0.1",
     "@types/jquery": "^3.5.5",
     "@typescript-eslint/eslint-plugin": "^4.15.0",

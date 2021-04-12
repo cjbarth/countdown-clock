@@ -11,11 +11,6 @@
       integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
       crossorigin="anonymous"
     />
-
-    <link
-      href="https://unpkg.com/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <div class="accordion" id="accordionExample">
@@ -48,6 +43,8 @@
                     class="form-control"
                     id="width"
                     placeholder="Width (default: 1920)"
+                    data-bs-toggle="tooltip"
+                    title="Width"
                   />
                 </div>
                 <div class="col-sm-4">
@@ -56,6 +53,8 @@
                     class="form-control"
                     id="height"
                     placeholder="Height (default: 1080)"
+                    data-bs-toggle="tooltip"
+                    title="Height"
                   />
                 </div>
                 <div class="col-sm-4">
@@ -63,7 +62,9 @@
                     type="number"
                     class="form-control"
                     id="handLength"
-                    placeholder="Hand Length (default: 200)"
+                    placeholder="Hand length (default: 200)"
+                    data-bs-toggle="tooltip"
+                    title="Hand length"
                   />
                 </div>
               </div>
@@ -76,15 +77,19 @@
                     type="number"
                     class="form-control"
                     id="tickCount"
-                    placeholder="Number of ticks (default: 5)"
+                    placeholder="Count (default: 5)"
+                    data-bs-toggle="tooltip"
+                    title="Count"
                   />
                 </div>
                 <div class="col-sm-4">
                   <input
                     type="number"
                     class="form-control"
-                    id="tickHeight"
-                    placeholder="Tick height (default: 30)"
+                    id="tickLength"
+                    placeholder="Length (default: 30)"
+                    data-bs-toggle="tooltip"
+                    title="Length"
                   />
                 </div>
                 <div class="col-sm-4">
@@ -92,7 +97,9 @@
                     type="number"
                     class="form-control"
                     id="tickWidth"
-                    placeholder="Tick width (default: 10)"
+                    placeholder="Width (default: 10)"
+                    data-bs-toggle="tooltip"
+                    title="Wdith"
                   />
                 </div>
                 <div class="col-sm-4">
@@ -100,7 +107,9 @@
                     type="text"
                     class="form-control"
                     id="tickLabels"
-                    placeholder="Tick labels"
+                    placeholder="Labels"
+                    data-bs-toggle="tooltip"
+                    title="Labels"
                   />
                 </div>
                 <div class="col-sm-4">
@@ -108,24 +117,33 @@
                     type="text"
                     class="form-control"
                     id="tickLabelCssFont"
-                    placeholder="Tick CSS font (default: italic 40px Calibri)"
+                    placeholder="CSS font (default: italic 40px Calibri)"
+                    data-bs-toggle="tooltip"
+                    title="CSS font"
                   />
                 </div>
                 <div class="col-sm-4">
-                  <input
-                    type="text"
-                    control="bootstrap-colorpicker"
-                    class="form-control"
-                    id="tickLabelColor"
-                    placeholder="Tick label color (default: black)"
-                  />
+                  <div class="input-group">
+                    <input
+                      type="color"
+                      class="form-control input-lg"
+                      id="tickLabelColor"
+                      placeholder="Color (default: black)"
+                      control="bootstrap-colorpicker"
+                      value="#000000"
+                      data-bs-toggle="tooltip"
+                      title="Color"
+                    />
+                  </div>
                 </div>
                 <div class="col-sm-4">
                   <input
                     type="number"
                     class="form-control"
                     id="tickLabelRadius"
-                    placeholder="Tick label radius (default: 335)"
+                    placeholder="Label radius (default: 335)"
+                    data-bs-toggle="tooltip"
+                    title="Label radius"
                   />
                 </div>
               </div>
@@ -212,7 +230,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="https://unpkg.com/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.9.5/dist/ffmpeg.min.js"></script>
     <script src="dist/bundle.js"></script>
   </body>

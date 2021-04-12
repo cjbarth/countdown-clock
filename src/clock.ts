@@ -7,7 +7,7 @@ export interface ClockOptions {
   lineWidth: number;
   locale: string;
   handLength: number;
-  tickHeight: number;
+  tickLength: number;
   tickWidth: number;
   tickCount: number;
   tickLabels: string[];
@@ -103,7 +103,7 @@ export class Clock {
       this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
       this.ctx.rotate(r);
       this.ctx.translate(-this.options.hMidpoint, -this.options.vMidpoint);
-      this.ctx.fillRect(x, y, this.options.tickWidth, this.options.tickHeight);
+      this.ctx.fillRect(x, y, this.options.tickWidth, this.options.tickLength);
       this.ctx.rotate(-r);
       this.ctx.closePath();
       this.ctx.setTransform(1, 0, 0, 1, 0, 0);
