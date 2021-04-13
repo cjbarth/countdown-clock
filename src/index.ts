@@ -26,21 +26,21 @@ const getOptions = (): clock.ClockOptions => {
   const options = {
     hResolution: parseInt(document.getElementById("height")?.nodeValue ?? "1920", 10),
     vResolution: parseInt(document.getElementById("width")?.nodeValue ?? "1080", 10),
-    clockRadius: 432,
-    lineWidth: 10,
-    locale: "en-US",
+    clockRadius: parseInt(document.getElementById("clockRadius")?.nodeValue ?? "432", 10),
+    lineWidth: parseInt(document.getElementById("lineWidth")?.nodeValue ?? "10", 10),
+    locale: document.getElementById("lineWidth")?.nodeValue ?? "en-US",
     handLength: parseInt(document.getElementById("handLength")?.nodeValue ?? "200", 10),
-    tickCount: 5,
-    tickLength: 30,
-    tickWidth: 10,
-    tickLabels: ["a", "IV", "V", "z", "zz"],
-    tickLabelCssFont: "italic 40px Calibri",
-    tickLabelColor: "purple",
-    tickLabelRadius: 335,
-    labelCssFont: "40px Calibri",
-    color: "black",
-    backgroundColor: "pink",
-    countdownSeconds: 60 * 5,
+    tickCount: parseInt(document.getElementById("tickCount")?.nodeValue ?? "5", 10),
+    tickLength: parseInt(document.getElementById("tickLength")?.nodeValue ?? "30", 10),
+    tickWidth: parseInt(document.getElementById("tickWidth")?.nodeValue ?? "10", 10),
+    tickLabels: document.getElementById("tickLabels")?.nodeValue?.split(";").map(String.prototype.trim),
+    tickLabelCssFont: document.getElementById("tickLabelCssFont")?.nodeValue ?? "italic 40px Calibri",
+    tickLabelColor: document.getElementById("tickLabelColor")?.nodeValue ?? "purple",
+    tickLabelRadius:  parseInt(document.getElementById("handLength")?.nodeValue ?? "335", 10),
+    labelCssFont: document.getElementById("labelCssFont")?.nodeValue ?? "40px Calibri",
+    color: document.getElementById("color")?.nodeValue ?? "black",
+    backgroundColor: document.getElementById("backgroundColor")?.nodeValue ?? "pink",
+    countdownSeconds: parseInt(document.getElementById("tickWidth")?.nodeValue ?? "300", 10),
   } as clock.ClockOptions;
 
   return options;
@@ -55,6 +55,8 @@ const sizeCanvas = (options: clock.ClockOptions): void => {
 const myClock = new clock.Clock(getCanvasContext(), getOptions());
 
 sizeCanvas(getOptions());
+
+// Globally enabled Bootstrap tooltips
 const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl);

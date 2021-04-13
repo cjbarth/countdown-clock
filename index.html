@@ -61,10 +61,30 @@
                   <input
                     type="number"
                     class="form-control"
+                    id="clockRadius"
+                    placeholder="Clock radius (default: 432)"
+                    data-bs-toggle="tooltip"
+                    title="Clock radius"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
                     id="handLength"
                     placeholder="Hand length (default: 200)"
                     data-bs-toggle="tooltip"
                     title="Hand length"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="lineWidth"
+                    placeholder="Frame width (default: 10)"
+                    data-bs-toggle="tooltip"
+                    title="Frame width"
                   />
                 </div>
               </div>
@@ -78,6 +98,16 @@
                     class="form-control"
                     id="tickCount"
                     placeholder="Count (default: 5)"
+                    data-bs-toggle="tooltip"
+                    title="Count"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="tickLabels"
+                    placeholder="Labels (Use ; as separator)"
                     data-bs-toggle="tooltip"
                     title="Count"
                   />
@@ -148,6 +178,69 @@
                 </div>
               </div>
             </div>
+            <div class="card">
+              <div class="card-header">Time Options</div>
+              <div class="card-body row">
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="countdownSeconds"
+                    placeholder="Countdown seconds (default: 300)"
+                    data-bs-toggle="tooltip"
+                    title="Countdown seconds"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="locale"
+                    placeholder="Locale (default: en-US)"
+                    data-bs-toggle="tooltip"
+                    title="Locale"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="labelCssFont"
+                    placeholder="CSS font (default: 40px Calibri)"
+                    data-bs-toggle="tooltip"
+                    title="CSS font"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input
+                      type="color"
+                      class="form-control input-lg"
+                      id="color"
+                      placeholder="Color (default: black)"
+                      control="bootstrap-colorpicker"
+                      value="#000000"
+                      data-bs-toggle="tooltip"
+                      title="Color"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input
+                      type="color"
+                      class="form-control input-lg"
+                      id="backgroundColor"
+                      placeholder="Background Color (default: black)"
+                      control="bootstrap-colorpicker"
+                      value="#000000"
+                      data-bs-toggle="tooltip"
+                      title="Background Color"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -171,6 +264,24 @@
           data-bs-parent="#accordionExample"
         >
           <div class="accordion-body">
+            <div class="card">
+              <div class="card-header">CSS Font How-To</div>
+              <div class="card-body row">
+                <div class="col">
+                  <div>
+                    Make your font:
+                    <a href="https://html-css-js.com/css/generator/font/"
+                      >https://html-css-js.com/css/generator/font/</a
+                    >
+                  </div>
+                  <div>
+                    Then make it a shorthand:
+                    <a href="https://shrthnd.volume7.io/">https://shrthnd.volume7.io/</a>
+                  </div>
+                  <div>Then copy the value of the `font` property to the CSS Font field.</div>
+                </div>
+              </div>
+            </div>
             <div class="input-group mb-3">
               <input type="file" class="form-control" id="inputAudio" />
             </div>
