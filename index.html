@@ -58,6 +58,20 @@
                   />
                 </div>
                 <div class="col-sm-4">
+                  <input type="number" class="form-control" id="hPosition" placeholder="Horizontal
+                  position (default: 1920)" data-bs-toggle="tooltip" title="Horizontal position />
+                </div>
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="vPosition"
+                    placeholder="Vertical position (default: 1080)"
+                    data-bs-toggle="tooltip"
+                    title="Vertical position"
+                  />
+                </div>
+                <div class="col-sm-4">
                   <input
                     type="number"
                     class="form-control"
@@ -81,11 +95,76 @@
                   <input
                     type="number"
                     class="form-control"
+                    id="handTailLength"
+                    placeholder="Hand tail length (default: 15)"
+                    data-bs-toggle="tooltip"
+                    title="Hand tail length"
+                  />
+                </div>
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    class="form-control"
                     id="lineWidth"
                     placeholder="Frame width (default: 10)"
                     data-bs-toggle="tooltip"
                     title="Frame width"
                   />
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">Arc Options</div>
+              <div class="card-body row">
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input
+                      type="color"
+                      class="form-control input-lg"
+                      id="arcOutlineColor"
+                      placeholder="Outline color (default: black)"
+                      control="bootstrap-colorpicker"
+                      value="#000000"
+                      data-bs-toggle="tooltip"
+                      title="Arc outline color"
+                    />
+                    <input
+                      type="number"
+                      class="form-control input-lg"
+                      id="arcOutlineTransparency"
+                      placeholder="Outline transparency (default: transparent)"
+                      value="0"
+                      data-bs-toggle="tooltop"
+                      title="Arc outline transparency"
+                      min="0"
+                      max="255"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input
+                      type="color"
+                      class="form-control input-lg"
+                      id="arcFillColor"
+                      placeholder="Fill color (default: black)"
+                      control="bootstrap-colorpicker"
+                      value="#000000"
+                      data-bs-toggle="tooltip"
+                      title="Arc fill color"
+                    />
+                    <input
+                      type="number"
+                      class="form-control input-lg"
+                      id="arcFillTransparency"
+                      placeholder="Fill transparency (default: transparent)"
+                      value="0"
+                      data-bs-toggle="tooltop"
+                      title="Arc fill transparency"
+                      min="0"
+                      max="255"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -319,6 +398,7 @@
       </div>
     </div>
 
+    <button id="preview">Preview @ 10x</button>
     <button id="download">Download</button>
     <div class="progress">
       <div

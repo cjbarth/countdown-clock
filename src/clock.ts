@@ -7,19 +7,22 @@ export interface ClockOptions {
   lineWidth: number;
   locale: string;
   handLength: number;
+  handTailLength: number;
   tickLength: number;
   tickWidth: number;
   tickCount: number;
   tickLabels: string[];
-  tickLabelsCount: number;
   tickLabelCssFont: string;
   tickLabelColor: string;
   tickLabelRadius: number;
+  arcFillColor: string;
+  arcFillTransparency: string;
+  arcOutlineColor: string;
+  arcOutlineTransparency: string;
   labelCssFont: string;
   color: string;
   backgroundColor: string;
   countdownSeconds: number;
-  radiansPerSecond: number;
 }
 
 export class Clock {
@@ -33,33 +36,35 @@ export class Clock {
     this.ctx = ctx;
     this.options = options;
 
-    Object.defineProperty(this.options, "hMidpoint", {
-      get: function () {
-        delete this.hMidpoint;
-        return (this.hMidpoint = this.hResolution / 2);
-      },
-      configurable: true,
-    });
+    // Object.defineProperty(this.options, "hMidpoint", {
+    //   get: function () {
+    //     delete this.hMidpoint;
+    //     return (this.hMidpoint = this.hResolution / 2);
+    //   },
+    //   configurable: true,
+    // });
 
-    Object.defineProperty(this.options, "vMidpoint", {
-      get: function () {
-        delete this.vMidpoint;
-        return (this.vMidpoint = this.vResolution / 2);
-      },
-      configurable: true,
-    });
+    // Object.defineProperty(this.options, "vMidpoint", {
+    //   get: function () {
+    //     delete this.vMidpoint;
+    //     return (this.vMidpoint = this.vResolution / 2);
+    //   },
+    //   configurable: true,
+    // });
 
-    Object.defineProperty(this.options, "tickLabelsCount", {
-      get: function () {
-        delete this.tickLabelsCount;
-        return (this.tickLabelsCount = this.tickLabels.length);
-      },
-      configurable: true,
-    });
+    // Object.defineProperty(this.options, "tickLabelsCount", {
+    //   get: function () {
+    //     delete this.tickLabelsCount;
+    //     return (this.tickLabelsCount = this.tickLabels?.length);
+    //   },
+    //   configurable: true,
+    // });
 
-    this.frameCount = Math.max(this.options.clockRadius * Math.TAU, this.options.countdownSeconds);
+    // There will always be 4x the radius of pixel parts on the edge of the circle
+    this.frameCount = Math.max(this.options.clockRadius * 4, this.options.countdownSeconds);
     this.radiansPerFrame = Math.TAU / this.frameCount;
     this.secondsPerFrame = this.options.countdownSeconds / this.frameCount;
+    console.log(this);
   }
 
   drawEdge(color?: string): void {
@@ -78,14 +83,14 @@ export class Clock {
     this.ctx.closePath();
   }
 
-  drawHand(radians: number, tailLength: number, color?: string): void {
+  drawHand(radians: number, color?: string): void {
     this.ctx.fillStyle = color || this.options.color;
     this.ctx.beginPath();
     this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
     this.ctx.rotate(radians);
     this.ctx.translate(-this.options.hMidpoint, -this.options.vMidpoint);
-    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + tailLength);
-    this.ctx.lineTo(this.options.hMidpoint, this.options.handLength);
+    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + this.options.handTailLength);
+    this.ctx.lineTo(this.options.hMidpoint, this.options.vMidpoint - this.options.handLength);
     this.ctx.rotate(-radians);
     this.ctx.lineWidth = this.options.lineWidth;
     this.ctx.stroke();
@@ -116,16 +121,16 @@ export class Clock {
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
 
-    for (let i = 0; i < this.options.tickLabelsCount; i++) {
+    const tickLabelsCount = this.options.tickLabels?.length ?? 0;
+
+    for (let i = 0; i < tickLabelsCount; i++) {
       // Start writing labels at the top of the clock
       const x =
         this.options.hMidpoint +
-        this.options.tickLabelRadius *
-          Math.cos((Math.TAU / this.options.tickLabelsCount) * i - Math.TAU / 4);
+        this.options.tickLabelRadius * Math.cos((Math.TAU / tickLabelsCount) * i - Math.TAU / 4);
       let y =
         this.options.vMidpoint +
-        this.options.tickLabelRadius *
-          Math.sin((Math.TAU / this.options.tickLabelsCount) * i - Math.TAU / 4);
+        this.options.tickLabelRadius * Math.sin((Math.TAU / tickLabelsCount) * i - Math.TAU / 4);
 
       const textMeasurements = this.ctx.measureText(this.options.tickLabels[i]);
       y +=
@@ -142,8 +147,8 @@ export class Clock {
       this.options.hMidpoint,
       this.options.vMidpoint,
       this.options.clockRadius,
-      0,
-      arcRadians
+      -(Math.TAU / 4),
+      arcRadians - (Math.TAU / 4)
     );
 
     // The wrapping `save`/`restore` is to undo the effects of the `clip`.
@@ -207,13 +212,18 @@ export class Clock {
 
   renderFrame(frameNumber: number): void {
     const t = this.getTimeText(12345 + Math.round(frameNumber * this.secondsPerFrame));
+    const arcRadians: number = frameNumber * this.radiansPerFrame;
 
     this.clear();
+    this.drawColorWedge(
+      arcRadians,
+      this.options.arcFillColor + this.options.arcFillTransparency,
+      this.options.arcOutlineColor + this.options.arcOutlineTransparency
+    );
     this.drawEdge();
-    this.drawHand(frameNumber * this.radiansPerFrame, 15);
+    this.drawHand(arcRadians);
     this.drawTicks();
     this.drawNumbers();
-    this.drawColorWedge(1.5, "blue", "red");
     this.drawCenterText(t, "orange");
   }
 }
