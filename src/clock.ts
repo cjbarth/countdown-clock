@@ -1,3 +1,5 @@
+import {Duration} from 'luxon'
+
 export interface ClockOptions {
   hResolution: number;
   vResolution: number;
@@ -5,9 +7,10 @@ export interface ClockOptions {
   vMidpoint: number;
   clockRadius: number;
   lineWidth: number;
-  locale: string;
+  timeFormat: string;
   handLength: number;
   handTailLength: number;
+  handWidth: number;
   tickLength: number;
   tickWidth: number;
   tickCount: number;
@@ -19,9 +22,12 @@ export interface ClockOptions {
   arcFillTransparency: string;
   arcOutlineColor: string;
   arcOutlineTransparency: string;
-  labelCssFont: string;
+  timeCssFont: string;
+  timeColor: string;
+  timeColorTransparency: string;
   color: string;
   backgroundColor: string;
+  backgroundColorTransparency: string;
   countdownSeconds: number;
 }
 
@@ -35,30 +41,6 @@ export class Clock {
   constructor(ctx: CanvasRenderingContext2D, options: ClockOptions) {
     this.ctx = ctx;
     this.options = options;
-
-    // Object.defineProperty(this.options, "hMidpoint", {
-    //   get: function () {
-    //     delete this.hMidpoint;
-    //     return (this.hMidpoint = this.hResolution / 2);
-    //   },
-    //   configurable: true,
-    // });
-
-    // Object.defineProperty(this.options, "vMidpoint", {
-    //   get: function () {
-    //     delete this.vMidpoint;
-    //     return (this.vMidpoint = this.vResolution / 2);
-    //   },
-    //   configurable: true,
-    // });
-
-    // Object.defineProperty(this.options, "tickLabelsCount", {
-    //   get: function () {
-    //     delete this.tickLabelsCount;
-    //     return (this.tickLabelsCount = this.tickLabels?.length);
-    //   },
-    //   configurable: true,
-    // });
 
     // There will always be 4x the radius of pixel parts on the edge of the circle
     this.frameCount = Math.max(this.options.clockRadius * 4, this.options.countdownSeconds);
@@ -92,7 +74,7 @@ export class Clock {
     this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + this.options.handTailLength);
     this.ctx.lineTo(this.options.hMidpoint, this.options.vMidpoint - this.options.handLength);
     this.ctx.rotate(-radians);
-    this.ctx.lineWidth = this.options.lineWidth;
+    this.ctx.lineWidth = this.options.handWidth;
     this.ctx.stroke();
     this.ctx.closePath();
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -163,11 +145,11 @@ export class Clock {
     this.ctx.restore();
   }
 
-  drawCenterText(text: string, color?: string): void {
-    this.ctx.font = this.options.labelCssFont;
+  drawCenterText(text: string): void {
+    this.ctx.font = this.options.timeCssFont;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
-    this.ctx.fillStyle = color || this.options.color;
+    this.ctx.fillStyle = this.options.timeColor + this.options.timeColorTransparency;
     this.ctx.fillText(
       text,
       this.options.hMidpoint,
@@ -179,11 +161,17 @@ export class Clock {
   clear(): void {
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.clearRect(0, 0, this.options.hResolution, this.options.vResolution);
-    this.ctx.fillStyle = this.options.backgroundColor;
+    this.ctx.fillStyle = this.options.backgroundColor + this.options.backgroundColorTransparency;
     this.ctx.fillRect(0, 0, this.options.hResolution, this.options.vResolution);
   }
 
   getTimeText(seconds: number): string {
+    const duration: Duration = Duration.fromMillis(seconds * 1000);
+
+    return duration.toFormat(this.options.timeFormat);
+
+
+
     const hours = Math.trunc(seconds / 3600);
     seconds = seconds % 3600;
     const minutes = Math.trunc(seconds / 60);
@@ -211,8 +199,8 @@ export class Clock {
   }
 
   renderFrame(frameNumber: number): void {
-    const t = this.getTimeText(12345 + Math.round(frameNumber * this.secondsPerFrame));
-    const arcRadians: number = frameNumber * this.radiansPerFrame;
+    const t = this.getTimeText((frameNumber) * this.secondsPerFrame);
+    const arcRadians: number = (frameNumber) * this.radiansPerFrame;
 
     this.clear();
     this.drawColorWedge(
@@ -224,6 +212,6 @@ export class Clock {
     this.drawHand(arcRadians);
     this.drawTicks();
     this.drawNumbers();
-    this.drawCenterText(t, "orange");
+    this.drawCenterText(t);
   }
 }
