@@ -1,14 +1,21 @@
-import { ffmpeg } from "../types/ffmpeg__ffmpeg/index";
+import { FFmpeg as IFFmpeg, ProgressCallback } from "../types/ffmpeg__ffmpeg/index";
 import { convertDataURIToBinary } from "./utilities";
 
 type StatusCallback = (statusMessage: string) => void;
 
 export class Transcoder {
-  public ffmpeg: ffmpeg;
+  public ffmpeg: IFFmpeg;
   private frames: string[] = [];
 
-  public constructor() {
-    this.ffmpeg = FFmpeg.createFFmpeg({ log: true });
+  public constructor(progress?: ProgressCallback) {
+    const options:FFmpeg.CreateFFmpegOptions = {
+      log: true
+    };
+
+    if (progress) {
+      options.progress = progress;
+    }
+    this.ffmpeg = FFmpeg.createFFmpeg(options);
   }
 
   public getFrameFileName(frameNumber: number): string {
@@ -24,20 +31,30 @@ export class Transcoder {
     return this;
   }
 
-  public addFrame(canvasElem: HTMLCanvasElement, statusCallback: StatusCallback): this {
-    const frameCount = this.frames.length;
-    if (frameCount > 9999) {
-      // We have to support enough frames to have at least one per pixel on the circumference of the circle
-      throw new Error("Too many frames. Only 10,000 frames supported.");
-    }
-    const frameFileName = this.getFrameFileName(frameCount);
-    const image = canvasElem.toDataURL("image/png");
-    const myUint8Array = convertDataURIToBinary(image);
-    this.ffmpeg.FS("writeFile", frameFileName, myUint8Array);
-    this.frames.push(frameFileName);
-    statusCallback("Frame " + frameFileName + " added...");
+  public addFrame(canvasElem: HTMLCanvasElement, statusCallback: StatusCallback): Promise<this> {
+    const myPromise: Promise<this> = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this);
+      });
+    });
 
-    return this;
+    myPromise.then(() => {
+      const frameCount = this.frames.length;
+      if (frameCount > 9999) {
+        // We have to support enough frames to have at least one per pixel on the circumference of the circle
+        throw new Error("Too many frames. Only 10,000 frames supported.");
+      }
+      const frameFileName = this.getFrameFileName(frameCount);
+      const image = canvasElem.toDataURL("image/png");
+      const myUint8Array = convertDataURIToBinary(image);
+      this.ffmpeg.FS("writeFile", frameFileName, myUint8Array);
+      this.frames.push(frameFileName);
+      statusCallback("Frame " + frameFileName + " added...");
+
+      return this;
+    });
+
+    return myPromise
   }
 
   public async addAudio(filePath: string): Promise<this> {

@@ -90,13 +90,14 @@ const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl);
 });
 
-const previewFrames: number[] = [];
+let previewFrames: number[] = [];
 getPreviewButton().addEventListener("click", () => {
   const myClock = new clock.Clock(getCanvasContext(), getOptions());
 
   sizeCanvas(getOptions());
 
   previewFrames.forEach(clearTimeout);
+  previewFrames = [];
 
   for (let frame = 0; frame <= myClock.frameCount; frame++) {
     previewFrames.push(
@@ -107,38 +108,42 @@ getPreviewButton().addEventListener("click", () => {
   }
 });
 
-getDownloadButton().addEventListener("click", () => {
+getDownloadButton().addEventListener("click", async () => {
   const myClock = new clock.Clock(getCanvasContext(), getOptions());
 
   sizeCanvas(getOptions());
 
-  const transcoder: Transcoder = new Transcoder();
-  transcoder
-    .init((status: string) => {
+  const progressBar = $("#progressBar");
+  progressBar.attr("aria-valuenow", 0);
+
+  const transcoder: Transcoder = new Transcoder((status) => {
+    const progressPercentage = status.ratio * 100;
+    progressBar.attr("aria-valuenow", progressPercentage).css("width", progressPercentage + "%");
+  });
+
+  await transcoder.init((status: string) => {
+    console.log(status);
+  });
+
+  for (let frame = 0; frame <= myClock.frameCount; frame++) {
+    myClock.renderFrame(frame);
+
+    // Save off the image for mp4
+    await transcoder.addFrame(getCanvas(), (status: string) => {
       console.log(status);
-    })
-    .then((transcoder: Transcoder) => {
-      for (let frame = 0; frame <= myClock.frameCount; frame++) {
-        myClock.renderFrame(frame);
-
-        // Save off the image for mp4
-        transcoder.addFrame(getCanvas(), (status: string) => {
-          console.log(status);
-        });
-      }
-
-      return transcoder;
-    })
-    .then((transcoder: Transcoder) => {
-      return transcoder.transcode(myClock.options.countdownSeconds, false, (status: string) => {
-        console.log(status);
-      });
-    })
-    .then((video: Uint8Array) => {
-      const blob = new Blob([video.buffer], { type: "video/mp4" });
-      saveAs(blob, "countdown.mp4");
-    })
-    .catch((err: Error) => {
-      console.error(err);
     });
+    const progressPercentage = (frame / myClock.frameCount) * 100;
+    progressBar.attr("aria-valuenow", progressPercentage).css("width", progressPercentage + "%");
+  }
+
+  const video: Uint8Array = await transcoder.transcode(
+    myClock.options.countdownSeconds,
+    false,
+    (status: string) => {
+      console.log(status);
+    }
+  );
+
+  const blob = new Blob([video.buffer], { type: "video/mp4" });
+  saveAs(blob, "countdown.mp4");
 });
