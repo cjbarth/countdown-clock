@@ -37,7 +37,7 @@
             <div class="card">
               <div class="card-header">Canvas Options</div>
               <div class="card-body row">
-                <div class="col-sm-4">
+                <div class="col-sm-8">
                   <div class="input-group">
                     <span class="input-group-text">Resolution: </span>
                     <input
@@ -69,18 +69,18 @@
                       id="backgroundColor"
                       placeholder="Background color"
                       control="bootstrap-colorpicker"
-                      value="#000000"
+                      value="#ffffff"
                       data-bs-toggle="tooltip"
                       title="Background color"
                     />
                     <input
                       type="number"
                       class="form-control input-lg"
-                      id="backgroundColorTransparency"
-                      placeholder="Background transparency"
-                      value="0"
+                      id="backgroundColorOpacity"
+                      placeholder="Background opacity"
+                      value="255"
                       data-bs-toggle="tooltop"
-                      title="Background transparency"
+                      title="Background opacity"
                       min="0"
                       max="255"
                     />
@@ -91,7 +91,7 @@
             <div class="card">
               <div class="card-header">Frame Options</div>
               <div class="card-body row">
-                <div class="col-sm-4">
+                <div class="col-sm-8">
                   <div class="input-group">
                     <span class="input-group-text">Position: </span>
                     <input
@@ -207,11 +207,11 @@
                     <input
                       type="number"
                       class="form-control input-lg"
-                      id="arcOutlineTransparency"
-                      placeholder="Outline transparency"
+                      id="arcOutlineOpacity"
+                      placeholder="Outline opacity"
                       value="0"
                       data-bs-toggle="tooltop"
-                      title="Arc outline transparency"
+                      title="Arc outline opacity"
                       min="0"
                       max="255"
                     />
@@ -232,11 +232,11 @@
                     <input
                       type="number"
                       class="form-control input-lg"
-                      id="arcFillTransparency"
-                      placeholder="Fill transparency"
+                      id="arcFillOpacity"
+                      placeholder="Fill opacity"
                       value="0"
                       data-bs-toggle="tooltop"
-                      title="Arc fill transparency"
+                      title="Arc fill opacity"
                       min="0"
                       max="255"
                     />
@@ -389,13 +389,35 @@
                     <input
                       type="number"
                       class="form-control input-lg"
-                      id="timeColorTransparency"
-                      placeholder="Time transparency"
+                      id="timeColorOpacity"
+                      placeholder="Time opacity"
                       value="255"
                       data-bs-toggle="tooltop"
-                      title="Time transparency"
+                      title="Time opacity"
                       min="0"
                       max="255"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-8">
+                  <div class="input-group">
+                    <span class="input-group-text">Position: </span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="timeHPosition"
+                      placeholder="centered"
+                      data-bs-toggle="tooltip"
+                      title="Horizontal position"
+                    />
+                    <span class="input-group-text">x</span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="timeVPosition"
+                      placeholder="centered"
+                      data-bs-toggle="tooltip"
+                      title="Vertical position"
                     />
                   </div>
                 </div>

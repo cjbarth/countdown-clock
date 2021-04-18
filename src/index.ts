@@ -31,47 +31,47 @@ const getOptions = (): clock.ClockOptions => {
   const options = {
     hResolution: parseInt($("#width").val() + "", 10),
     vResolution: parseInt($("#height").val() + "", 10),
-    hMidpoint: parseInt($("#hPosition").val() + "", 10),
-    vMidpoint: parseInt($("#vPosition").val() + "", 10),
+    hPosition: parseInt($("#hPosition").val() + "", 10),
+    vPosition: parseInt($("#vPosition").val() + "", 10),
     clockRadius: parseInt($("#clockRadius").val() + "", 10),
     lineWidth: parseInt($("#lineWidth").val() + "", 10),
-    timeFormat: $("#timeFormat").val() + '',
+    timeFormat: $("#timeFormat").val() + "",
     handLength: parseInt($("#handLength").val() + "", 10),
     handTailLength: parseInt($("#handTailLength").val() + "", 10),
     handWidth: parseInt($("#handWidth").val() + "", 10),
-    tickCount: parseInt(document.getElementById("tickCount")?.nodeValue ?? "5", 10),
-    tickLength: parseInt(document.getElementById("tickLength")?.nodeValue ?? "30", 10),
-    tickWidth: parseInt(document.getElementById("tickWidth")?.nodeValue ?? "10", 10),
-    tickLabels:
-      document.getElementById("tickLabels")?.nodeValue?.split(";").map(String.prototype.trim) ?? [],
-    tickLabelCssFont:
-      document.getElementById("tickLabelCssFont")?.nodeValue ?? "italic 40px Calibri",
-    tickLabelColor: document.getElementById("tickLabelColor")?.nodeValue ?? "purple",
-    tickLabelRadius: parseInt(document.getElementById("handLength")?.nodeValue ?? "335", 10),
+    tickCount: parseInt($("#tickCount").val() + "", 10),
+    tickLength: parseInt($("#tickLength").val() + "", 10),
+    tickWidth: parseInt($("#tickWidth").val() + "", 10),
+    tickLabels: $("tickLabels").val()?.toString().split(";").map(String.prototype.trim) ?? [],
+    tickLabelCssFont: $("#tickLabelCssFont").val() + "",
+    tickLabelColor: $("#tickLabelColor").val() + "",
+    tickLabelRadius: parseInt($("#tickLabelRadius").val() + "", 10),
     arcFillColor: $("#arcFillColor").val() + "" ?? "#000000",
-    arcFillTransparency: (
-      "00" + parseInt($("#arcFillTransparency").val() + "", 10).toString(16)
-    ).slice(-2),
+    arcFillOpacity: ("00" + parseInt($("#arcFillOpacity").val() + "", 10).toString(16)).slice(-2),
     arcOutlineColor: $("#arcOutlineColor").val() + "" ?? "#000000",
-    arcOutlineTransparency: (
-      "00" + parseInt($("#arcOutlineTransparency").val() + "", 10).toString(16)
-    ).slice(-2),
+    arcOutlineOpacity: ("00" + parseInt($("#arcOutlineOpacity").val() + "", 10).toString(16)).slice(
+      -2
+    ),
 
-    timeCssFont: document.getElementById("timeCssFont")?.nodeValue ?? "40px Calibri",
-    timeColor: $("#timeColor").val() + '' ?? "#000000",
-    timeColorTransparency: (
-      "00" + parseInt($("#timeColorTransparency").val() + "", 10).toString(16)
+    timeCssFont: $("#timeCssFont").val() + "",
+    timeColor: $("#timeColor").val() + "" ?? "#000000",
+    timeColorOpacity: ("00" + parseInt($("#timeColorOpacity").val() + "", 10).toString(16)).slice(
+      -2
+    ),
+    timeHPosition: parseInt($("#timeHPosition").val() + "", 10),
+    timeVPosition: parseInt($("#timeVPosition").val() + "", 10),
+    color: $("#color").val() + "",
+    backgroundColor: $("#backgroundColor").val() + "" ?? "#000000",
+    backgroundColorOpacity: (
+      "00" + parseInt($("#backgroundColorOpacity").val() + "", 10).toString(16)
     ).slice(-2),
-    color: document.getElementById("color")?.nodeValue ?? "black",
-    backgroundColor: $("#backgroundColor").val() + '' ?? "#000000",
-    backgroundColorTransparency: (
-      "00" + parseInt($("#backgroundColorTransparency").val() + "", 10).toString(16)
-    ).slice(-2),
-    countdownSeconds: parseInt(document.getElementById("tickWidth")?.nodeValue ?? "300", 10),
+    countdownSeconds: parseInt($("#countdownSeconds").val() + "", 10),
   };
 
-  options.hMidpoint = options.hMidpoint || options.hResolution / 2;
-  options.vMidpoint = options.vMidpoint || options.vResolution / 2;
+  options.hPosition = options.hPosition || options.hResolution / 2;
+  options.vPosition = options.vPosition || options.vResolution / 2;
+  options.timeHPosition = options.timeHPosition || options.hPosition;
+  options.timeVPosition = options.timeVPosition || options.vPosition;
 
   console.log(options);
 
@@ -102,7 +102,7 @@ getPreviewButton().addEventListener("click", () => {
     previewFrames.push(
       window.setTimeout(function () {
         myClock.renderFrame(frame);
-      }, myClock.secondsPerFrame / 10 * frame)
+      }, (myClock.secondsPerFrame / 10) * frame)
     );
   }
 });

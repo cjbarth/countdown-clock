@@ -3,8 +3,8 @@ import {Duration} from 'luxon'
 export interface ClockOptions {
   hResolution: number;
   vResolution: number;
-  hMidpoint: number;
-  vMidpoint: number;
+  hPosition: number;
+  vPosition: number;
   clockRadius: number;
   lineWidth: number;
   timeFormat: string;
@@ -19,15 +19,17 @@ export interface ClockOptions {
   tickLabelColor: string;
   tickLabelRadius: number;
   arcFillColor: string;
-  arcFillTransparency: string;
+  arcFillOpacity: string;
   arcOutlineColor: string;
-  arcOutlineTransparency: string;
+  arcOutlineOpacity: string;
   timeCssFont: string;
   timeColor: string;
-  timeColorTransparency: string;
+  timeColorOpacity: string;
+  timeHPosition: number;
+  timeVPosition: number;
   color: string;
   backgroundColor: string;
-  backgroundColorTransparency: string;
+  backgroundColorOpacity: string;
   countdownSeconds: number;
 }
 
@@ -53,13 +55,12 @@ export class Clock {
     this.ctx.fillStyle = color || this.options.color;
     this.ctx.beginPath();
     this.ctx.arc(
-      this.options.hMidpoint,
-      this.options.vMidpoint,
+      this.options.hPosition,
+      this.options.vPosition,
       this.options.clockRadius,
       0,
       Math.TAU
     );
-    this.ctx.clip();
     this.ctx.lineWidth = this.options.lineWidth;
     this.ctx.stroke();
     this.ctx.closePath();
@@ -68,11 +69,11 @@ export class Clock {
   drawHand(radians: number, color?: string): void {
     this.ctx.fillStyle = color || this.options.color;
     this.ctx.beginPath();
-    this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
+    this.ctx.translate(this.options.hPosition, this.options.vPosition);
     this.ctx.rotate(radians);
-    this.ctx.translate(-this.options.hMidpoint, -this.options.vMidpoint);
-    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint + this.options.handTailLength);
-    this.ctx.lineTo(this.options.hMidpoint, this.options.vMidpoint - this.options.handLength);
+    this.ctx.translate(-this.options.hPosition, -this.options.vPosition);
+    this.ctx.moveTo(this.options.hPosition, this.options.vPosition + this.options.handTailLength);
+    this.ctx.lineTo(this.options.hPosition, this.options.vPosition - this.options.handLength);
     this.ctx.rotate(-radians);
     this.ctx.lineWidth = this.options.handWidth;
     this.ctx.stroke();
@@ -81,15 +82,15 @@ export class Clock {
   }
 
   drawTicks(color?: string): void {
-    const x = this.options.hMidpoint - this.options.tickWidth / 2;
-    const y = this.options.vMidpoint - this.options.clockRadius;
+    const x = this.options.hPosition - this.options.tickWidth / 2;
+    const y = this.options.vPosition - this.options.clockRadius;
 
     this.ctx.fillStyle = color || this.options.color;
     for (let r = 0; r < Math.TAU; r += (1 / this.options.tickCount) * Math.TAU) {
       this.ctx.beginPath();
-      this.ctx.translate(this.options.hMidpoint, this.options.vMidpoint);
+      this.ctx.translate(this.options.hPosition, this.options.vPosition);
       this.ctx.rotate(r);
-      this.ctx.translate(-this.options.hMidpoint, -this.options.vMidpoint);
+      this.ctx.translate(-this.options.hPosition, -this.options.vPosition);
       this.ctx.fillRect(x, y, this.options.tickWidth, this.options.tickLength);
       this.ctx.rotate(-r);
       this.ctx.closePath();
@@ -97,9 +98,9 @@ export class Clock {
     }
   }
 
-  drawNumbers(color?: string): void {
+  drawNumbers(): void {
     this.ctx.font = this.options.tickLabelCssFont;
-    this.ctx.fillStyle = color || this.options.color;
+    this.ctx.fillStyle = this.options.color;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
 
@@ -108,26 +109,25 @@ export class Clock {
     for (let i = 0; i < tickLabelsCount; i++) {
       // Start writing labels at the top of the clock
       const x =
-        this.options.hMidpoint +
+        this.options.hPosition +
         this.options.tickLabelRadius * Math.cos((Math.TAU / tickLabelsCount) * i - Math.TAU / 4);
       let y =
-        this.options.vMidpoint +
+        this.options.vPosition +
         this.options.tickLabelRadius * Math.sin((Math.TAU / tickLabelsCount) * i - Math.TAU / 4);
 
       const textMeasurements = this.ctx.measureText(this.options.tickLabels[i]);
       y +=
         (textMeasurements.actualBoundingBoxAscent + textMeasurements.actualBoundingBoxDescent) / 2;
-      //   y += (textMeasurements.fontBoundingBoxAscent + textMeasurements.fontBoundingBoxDescent) / 2;
       this.ctx.fillText(this.options.tickLabels[i], x, y);
     }
   }
 
   drawColorWedge(arcRadians: number, fillColor?: string, outlineColor?: string): void {
     this.ctx.beginPath();
-    this.ctx.moveTo(this.options.hMidpoint, this.options.vMidpoint);
+    this.ctx.moveTo(this.options.hPosition, this.options.vPosition);
     this.ctx.arc(
-      this.options.hMidpoint,
-      this.options.vMidpoint,
+      this.options.hPosition,
+      this.options.vPosition,
       this.options.clockRadius,
       -(Math.TAU / 4),
       arcRadians - (Math.TAU / 4)
@@ -149,19 +149,18 @@ export class Clock {
     this.ctx.font = this.options.timeCssFont;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
-    this.ctx.fillStyle = this.options.timeColor + this.options.timeColorTransparency;
+    this.ctx.fillStyle = this.options.timeColor + this.options.timeColorOpacity;
     this.ctx.fillText(
       text,
-      this.options.hMidpoint,
-      this.options.vMidpoint,
-      this.options.clockRadius * 2
+      this.options.timeHPosition,
+      this.options.timeVPosition
     );
   }
 
   clear(): void {
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.clearRect(0, 0, this.options.hResolution, this.options.vResolution);
-    this.ctx.fillStyle = this.options.backgroundColor + this.options.backgroundColorTransparency;
+    this.ctx.fillStyle = this.options.backgroundColor + this.options.backgroundColorOpacity;
     this.ctx.fillRect(0, 0, this.options.hResolution, this.options.vResolution);
   }
 
@@ -205,8 +204,8 @@ export class Clock {
     this.clear();
     this.drawColorWedge(
       arcRadians,
-      this.options.arcFillColor + this.options.arcFillTransparency,
-      this.options.arcOutlineColor + this.options.arcOutlineTransparency
+      this.options.arcFillColor + this.options.arcFillOpacity,
+      this.options.arcOutlineColor + this.options.arcOutlineOpacity
     );
     this.drawEdge();
     this.drawHand(arcRadians);
