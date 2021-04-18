@@ -113,12 +113,14 @@ getDownloadButton().addEventListener("click", async () => {
 
   sizeCanvas(getOptions());
 
-  const progressBar = $("#progressBar");
-  progressBar.attr("aria-valuenow", 0);
+  const progressBarPrepare = $("#progressBarPrepare");
+  const progressBarCompress = $("#progressBarCompress");
 
   const transcoder: Transcoder = new Transcoder((status) => {
-    const progressPercentage = status.ratio * 100;
-    progressBar.attr("aria-valuenow", progressPercentage).css("width", progressPercentage + "%");
+    const progressPercentage = (status.ratio * 100) / 2; // This is only half the process
+    progressBarCompress
+      .attr("aria-valuenow", progressPercentage)
+      .css("width", progressPercentage + "%");
   });
 
   await transcoder.init((status: string) => {
@@ -132,8 +134,10 @@ getDownloadButton().addEventListener("click", async () => {
     await transcoder.addFrame(getCanvas(), (status: string) => {
       console.log(status);
     });
-    const progressPercentage = (frame / myClock.frameCount) * 100;
-    progressBar.attr("aria-valuenow", progressPercentage).css("width", progressPercentage + "%");
+    const progressPercentage = ((frame / myClock.frameCount) * 100) / 2; // This is only half the process
+    progressBarPrepare
+      .attr("aria-valuenow", progressPercentage)
+      .css("width", progressPercentage + "%");
   }
 
   const video: Uint8Array = await transcoder.transcode(
