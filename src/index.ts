@@ -42,7 +42,12 @@ const getOptions = (): clock.ClockOptions => {
     tickCount: parseInt($("#tickCount").val() + "", 10),
     tickLength: parseInt($("#tickLength").val() + "", 10),
     tickWidth: parseInt($("#tickWidth").val() + "", 10),
-    tickLabels: $("tickLabels").val()?.toString().split(";").map(String.prototype.trim) ?? [],
+    tickLabels:
+      $("#tickLabels")
+        .val()
+        ?.toString()
+        .split(";")
+        .map((s) => s.trim()) ?? [],
     tickLabelCssFont: $("#tickLabelCssFont").val() + "",
     tickLabelColor: $("#tickLabelColor").val() + "",
     tickLabelRadius: parseInt($("#tickLabelRadius").val() + "", 10),

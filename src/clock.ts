@@ -83,7 +83,7 @@ export class Clock {
 
   drawTicks(color: string): void {
     const x = this.options.hPosition - this.options.tickWidth / 2;
-    const y = this.options.vPosition - this.options.clockRadius;
+    const y = this.options.vPosition - this.options.clockRadius + (this.options.lineWidth / 2);
 
     this.ctx.fillStyle = color;
     for (let r = 0; r < Math.TAU; r += (1 / this.options.tickCount) * Math.TAU) {
