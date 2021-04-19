@@ -3,6 +3,7 @@
     "allowUmdGlobalAccess": true,
     "sourceMap": true,
     "module": "es6",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "target": "es6",
