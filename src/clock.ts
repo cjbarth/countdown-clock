@@ -28,6 +28,7 @@ export interface ClockOptions {
   timeHPosition: number;
   timeVPosition: number;
   color: string;
+  opacity: string;
   backgroundColor: string;
   backgroundColorOpacity: string;
   countdownSeconds: number;
@@ -48,11 +49,10 @@ export class Clock {
     this.frameCount = Math.max(this.options.clockRadius * 4, this.options.countdownSeconds);
     this.radiansPerFrame = Math.TAU / this.frameCount;
     this.secondsPerFrame = this.options.countdownSeconds / this.frameCount;
-    console.log(this);
   }
 
-  drawEdge(color?: string): void {
-    this.ctx.fillStyle = color || this.options.color;
+  drawEdge(color: string): void {
+    this.ctx.strokeStyle = color;
     this.ctx.beginPath();
     this.ctx.arc(
       this.options.hPosition,
@@ -66,8 +66,8 @@ export class Clock {
     this.ctx.closePath();
   }
 
-  drawHand(radians: number, color?: string): void {
-    this.ctx.fillStyle = color || this.options.color;
+  drawHand(radians: number, color: string): void {
+    this.ctx.strokeStyle = color;
     this.ctx.beginPath();
     this.ctx.translate(this.options.hPosition, this.options.vPosition);
     this.ctx.rotate(radians);
@@ -81,11 +81,11 @@ export class Clock {
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
-  drawTicks(color?: string): void {
+  drawTicks(color: string): void {
     const x = this.options.hPosition - this.options.tickWidth / 2;
     const y = this.options.vPosition - this.options.clockRadius;
 
-    this.ctx.fillStyle = color || this.options.color;
+    this.ctx.fillStyle = color;
     for (let r = 0; r < Math.TAU; r += (1 / this.options.tickCount) * Math.TAU) {
       this.ctx.beginPath();
       this.ctx.translate(this.options.hPosition, this.options.vPosition);
@@ -98,9 +98,9 @@ export class Clock {
     }
   }
 
-  drawNumbers(): void {
+  drawNumbers(color: string): void {
     this.ctx.font = this.options.tickLabelCssFont;
-    this.ctx.fillStyle = this.options.color;
+    this.ctx.fillStyle = color;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
 
@@ -122,7 +122,7 @@ export class Clock {
     }
   }
 
-  drawColorWedge(arcRadians: number, fillColor?: string, outlineColor?: string): void {
+  drawColorWedge(arcRadians: number, fillColor: string, outlineColor: string): void {
     this.ctx.beginPath();
     this.ctx.moveTo(this.options.hPosition, this.options.vPosition);
     this.ctx.arc(
@@ -138,9 +138,9 @@ export class Clock {
     this.ctx.clip();
     this.ctx.closePath();
     this.ctx.lineWidth = this.options.lineWidth;
-    this.ctx.fillStyle = fillColor || this.options.color;
+    this.ctx.fillStyle = fillColor;
     this.ctx.fill();
-    this.ctx.strokeStyle = outlineColor || this.options.color;
+    this.ctx.strokeStyle = outlineColor;
     this.ctx.stroke();
     this.ctx.restore();
   }
@@ -168,38 +168,12 @@ export class Clock {
     const duration: Duration = Duration.fromMillis(seconds * 1000);
 
     return duration.toFormat(this.options.timeFormat);
-
-
-
-    const hours = Math.trunc(seconds / 3600);
-    seconds = seconds % 3600;
-    const minutes = Math.trunc(seconds / 60);
-    seconds = seconds % 60;
-
-    const date = new Date(Date.UTC(0, 0, 0, hours, minutes, seconds, 0));
-
-    const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      timeZone: "UTC",
-      hour12: true,
-    };
-
-    const timeParts = new Intl.DateTimeFormat(this.options.locale, timeOptions).formatToParts(date);
-
-    return timeParts
-      .map((value) => {
-        // Leave off the dayPeriod so we can get a raw time without extra 0s
-        return value.type === "dayPeriod" ? "" : value.value;
-      })
-      .join("")
-      .trim();
   }
 
   renderFrame(frameNumber: number): void {
     const t = this.getTimeText((frameNumber) * this.secondsPerFrame);
     const arcRadians: number = (frameNumber) * this.radiansPerFrame;
+    const color: string = this.options.color + this.options.opacity;
 
     this.clear();
     this.drawColorWedge(
@@ -207,10 +181,10 @@ export class Clock {
       this.options.arcFillColor + this.options.arcFillOpacity,
       this.options.arcOutlineColor + this.options.arcOutlineOpacity
     );
-    this.drawEdge();
-    this.drawHand(arcRadians);
-    this.drawTicks();
-    this.drawNumbers();
+    this.drawEdge(color);
+    this.drawHand(arcRadians, color);
+    this.drawTicks(color);
+    this.drawNumbers(color);
     this.drawCenterText(t);
   }
 }

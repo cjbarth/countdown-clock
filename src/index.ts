@@ -61,6 +61,7 @@ const getOptions = (): clock.ClockOptions => {
     timeHPosition: parseInt($("#timeHPosition").val() + "", 10),
     timeVPosition: parseInt($("#timeVPosition").val() + "", 10),
     color: $("#color").val() + "",
+    opacity: ("00" + parseInt($("#opacity").val() + "", 10).toString(16)).slice(-2),
     backgroundColor: $("#backgroundColor").val() + "" ?? "#000000",
     backgroundColorOpacity: (
       "00" + parseInt($("#backgroundColorOpacity").val() + "", 10).toString(16)
@@ -89,6 +90,11 @@ const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-tog
 const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl);
 });
+$("#accordionConfig input").on("input", () => {
+  const myClock = new clock.Clock(getCanvasContext(), getOptions());
+  sizeCanvas(getOptions());
+  myClock.renderFrame(Math.round(Math.random() * myClock.frameCount));
+});
 
 let previewFrames: number[] = [];
 getPreviewButton().addEventListener("click", () => {
@@ -103,7 +109,7 @@ getPreviewButton().addEventListener("click", () => {
     previewFrames.push(
       window.setTimeout(function () {
         myClock.renderFrame(frame);
-      }, (myClock.secondsPerFrame / 10) * frame)
+      }, (myClock.secondsPerFrame / 10) * frame * 1000)
     );
   }
 });

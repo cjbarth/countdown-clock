@@ -13,413 +13,75 @@
     />
   </head>
   <body>
-    <div class="accordion" id="accordionExample">
+    <div class="accordion" id="accordionConfig">
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
+        <h2 class="accordion-header" id="headingCanvas">
           <button
-            class="accordion-button"
+            class="accordion-button collapsed"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#collapseOne"
-            aria-expanded="true"
-            aria-controls="collapseOne"
+            data-bs-target="#collapseCanvas"
+            aria-expanded="false"
+            aria-controls="collapseCanvas"
           >
-            Configuration
+            Canvas Options
           </button>
         </h2>
         <div
-          id="collapseOne"
-          class="accordion-collapse collapse show"
-          aria-labelledby="headingOne"
-          data-bs-parent="#accordionExample"
+          id="collapseCanvas"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingCanvas"
+          data-bs-parent="#accordionConfig"
         >
           <div class="accordion-body">
-            <div class="card">
-              <div class="card-header">Canvas Options</div>
-              <div class="card-body row">
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <span class="input-group-text">Resolution: </span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="width"
-                      placeholder="Width"
-                      data-bs-toggle="tooltip"
-                      title="Width"
-                      value="1920"
-                    />
-                    <span class="input-group-text">x</span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="height"
-                      placeholder="Height"
-                      data-bs-toggle="tooltip"
-                      title="Height"
-                      value="1080"
-                    />
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group">
-                    <input
-                      type="color"
-                      class="form-control input-lg"
-                      id="backgroundColor"
-                      placeholder="Background color"
-                      control="bootstrap-colorpicker"
-                      value="#ffffff"
-                      data-bs-toggle="tooltip"
-                      title="Background color"
-                    />
-                    <input
-                      type="range"
-                      class="form-control form-range input-lg"
-                      id="backgroundColorOpacity"
-                      placeholder="Background opacity"
-                      value="255"
-                      data-bs-toggle="tooltop"
-                      title="Background opacity"
-                      min="0"
-                      max="255"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header">Frame Options</div>
-              <div class="card-body row">
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <span class="input-group-text">Position: </span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="hPosition"
-                      placeholder="centered"
-                      data-bs-toggle="tooltip"
-                      title="Horizontal position"
-                    />
-                    <span class="input-group-text">x</span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="vPosition"
-                      placeholder="centered"
-                      data-bs-toggle="tooltip"
-                      title="Vertical position"
-                    />
-                  </div>
-                </div>
-                <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-text">Resolution: </span>
                   <input
                     type="number"
                     class="form-control"
-                    id="clockRadius"
-                    placeholder="Clock radius"
-                    data-bs-toggle="tooltip"
-                    title="Clock radius"
-                    value="432"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="lineWidth"
-                    placeholder="Frame width"
-                    data-bs-toggle="tooltip"
-                    title="Frame width"
-                    value="10"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group">
-                    <input
-                      type="color"
-                      class="form-control input-lg"
-                      id="color"
-                      placeholder="Color"
-                      control="bootstrap-colorpicker"
-                      value="#000000"
-                      data-bs-toggle="tooltip"
-                      title="Color"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header">Hand Options</div>
-              <div class="card-body row">
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="handLength"
-                    placeholder="Hand length"
-                    data-bs-toggle="tooltip"
-                    title="Hand length"
-                    value="380"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="handTailLength"
-                    placeholder="Hand tail length"
-                    data-bs-toggle="tooltip"
-                    title="Hand tail length"
-                    value="15"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="handWidth"
-                    placeholder="Hand width"
-                    data-bs-toggle="tooltip"
-                    title="Hand width"
-                    value="10"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header">Arc Options</div>
-              <div class="card-body row">
-                <div class="col-sm-4">
-                  <div class="input-group">
-                    <input
-                      type="color"
-                      class="form-control input-lg"
-                      id="arcOutlineColor"
-                      placeholder="Outline color"
-                      control="bootstrap-colorpicker"
-                      value="#000000"
-                      data-bs-toggle="tooltip"
-                      title="Arc outline color"
-                    />
-                    <input
-                      type="range"
-                      class="form-control form-range input-lg"
-                      id="arcOutlineOpacity"
-                      placeholder="Outline opacity"
-                      value="0"
-                      data-bs-toggle="tooltop"
-                      title="Arc outline opacity"
-                      min="0"
-                      max="255"
-                    />
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group">
-                    <input
-                      type="color"
-                      class="form-control input-lg"
-                      id="arcFillColor"
-                      placeholder="Fill color"
-                      control="bootstrap-colorpicker"
-                      value="#000000"
-                      data-bs-toggle="tooltip"
-                      title="Arc fill color"
-                    />
-                    <input
-                      type="range"
-                      class="form-control form-range input-lg"
-                      id="arcFillOpacity"
-                      placeholder="Fill opacity"
-                      value="0"
-                      data-bs-toggle="tooltop"
-                      title="Arc fill opacity"
-                      min="0"
-                      max="255"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header">Tick Options</div>
-              <div class="card-body row">
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="tickCount"
-                    placeholder="Count"
-                    data-bs-toggle="tooltip"
-                    title="Count"
-                    value="5"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="tickLabels"
-                    placeholder="Labels (Use ; as separator)"
-                    data-bs-toggle="tooltip"
-                    title="Count"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="tickLength"
-                    placeholder="Length"
-                    data-bs-toggle="tooltip"
-                    title="Length"
-                    value="30"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="tickWidth"
+                    id="width"
                     placeholder="Width"
                     data-bs-toggle="tooltip"
-                    title="Wdith"
-                    value="10"
+                    title="Width"
+                    value="1920"
                   />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="tickLabels"
-                    placeholder="Labels"
-                    data-bs-toggle="tooltip"
-                    title="Labels"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="tickLabelCssFont"
-                    placeholder="CSS font"
-                    data-bs-toggle="tooltip"
-                    title="CSS font"
-                    value="italic 40px Calibri"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group">
-                    <input
-                      type="color"
-                      class="form-control input-lg"
-                      id="tickLabelColor"
-                      placeholder="Color"
-                      control="bootstrap-colorpicker"
-                      value="#000000"
-                      data-bs-toggle="tooltip"
-                      title="Color"
-                    />
-                  </div>
-                </div>
-                <div class="col-sm-4">
+                  <span class="input-group-text">x</span>
                   <input
                     type="number"
                     class="form-control"
-                    id="tickLabelRadius"
-                    placeholder="Label radius"
+                    id="height"
+                    placeholder="Height"
                     data-bs-toggle="tooltip"
-                    title="Label radius"
-                    value="335"
+                    title="Height"
+                    value="1080"
                   />
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header">Time Options</div>
-              <div class="card-body row">
-                <div class="col-sm-4">
+              <div class="col-sm-4">
+                <div class="input-group">
                   <input
-                    type="number"
-                    class="form-control"
-                    id="countdownSeconds"
-                    placeholder="Countdown seconds"
+                    type="color"
+                    class="form-control input-lg"
+                    id="backgroundColor"
+                    placeholder="Background color"
+                    control="bootstrap-colorpicker"
+                    value="#ffffff"
                     data-bs-toggle="tooltip"
-                    title="Countdown seconds"
-                    value="300"
+                    title="Background color"
                   />
-                </div>
-                <div class="col-sm-4">
                   <input
-                    type="text"
-                    class="form-control"
-                    id="timeFormat"
-                    placeholder="Format"
-                    data-bs-toggle="tooltip"
-                    title="Format"
-                    value="hh:mm:ss.S"
+                    type="range"
+                    class="form-control form-range input-lg"
+                    id="backgroundColorOpacity"
+                    placeholder="Background opacity"
+                    value="255"
+                    data-bs-toggle="tooltop"
+                    title="Background opacity"
+                    min="0"
+                    max="255"
                   />
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="timeCssFont"
-                    placeholder="CSS font"
-                    data-bs-toggle="tooltip"
-                    title="CSS font"
-                    value="40px Calibri"
-                  />
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group">
-                    <input
-                      type="color"
-                      class="form-control input-lg"
-                      id="timeColor"
-                      placeholder="Time color"
-                      control="bootstrap-colorpicker"
-                      value="#000000"
-                      data-bs-toggle="tooltip"
-                      title="Time color"
-                    />
-                    <input
-                      type="range"
-                      class="form-control form-range input-lg"
-                      id="timeColorOpacity"
-                      placeholder="Time opacity"
-                      value="255"
-                      data-bs-toggle="tooltop"
-                      title="Time opacity"
-                      min="0"
-                      max="255"
-                    />
-                  </div>
-                </div>
-                <div class="col-sm-8">
-                  <div class="input-group">
-                    <span class="input-group-text">Position: </span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="timeHPosition"
-                      placeholder="centered"
-                      data-bs-toggle="tooltip"
-                      title="Horizontal position"
-                    />
-                    <span class="input-group-text">x</span>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="timeVPosition"
-                      placeholder="centered"
-                      data-bs-toggle="tooltip"
-                      title="Vertical position"
-                    />
-                  </div>
                 </div>
               </div>
             </div>
@@ -427,28 +89,464 @@
         </div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTwo">
+        <h2 class="accordion-header" id="headingFrame">
           <button
             class="accordion-button collapsed"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#collapseTwo"
+            data-bs-target="#collapseFrame"
             aria-expanded="false"
-            aria-controls="collapseTwo"
+            aria-controls="collapseFrame"
+          >
+            Frame Options
+          </button>
+        </h2>
+        <div
+          id="collapseFrame"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingFrame"
+          data-bs-parent="#accordionConfig"
+        >
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-text">Position: </span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="hPosition"
+                    placeholder="centered"
+                    data-bs-toggle="tooltip"
+                    title="Horizontal position"
+                  />
+                  <span class="input-group-text">x</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="vPosition"
+                    placeholder="centered"
+                    data-bs-toggle="tooltip"
+                    title="Vertical position"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="clockRadius"
+                  placeholder="Clock radius"
+                  data-bs-toggle="tooltip"
+                  title="Clock radius"
+                  value="432"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="lineWidth"
+                  placeholder="Frame width"
+                  data-bs-toggle="tooltip"
+                  title="Frame width"
+                  value="10"
+                />
+              </div>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <input
+                    type="color"
+                    class="form-control input-lg"
+                    id="color"
+                    placeholder="Color"
+                    control="bootstrap-colorpicker"
+                    value="#000000"
+                    data-bs-toggle="tooltip"
+                    title="Color"
+                  />
+                  <input
+                    type="range"
+                    class="form-control form-range input-lg"
+                    id="opacity"
+                    placeholder="Opacity"
+                    value="255"
+                    data-bs-toggle="tooltop"
+                    title="Opacity"
+                    min="0"
+                    max="255"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingHand">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseHand"
+            aria-expanded="false"
+            aria-controls="collapseHand"
+          >
+            Hand Options
+          </button>
+        </h2>
+        <div
+          id="collapseHand"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingHand"
+          data-bs-parent="#accordionConfig"
+        >
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="handLength"
+                  placeholder="Hand length"
+                  data-bs-toggle="tooltip"
+                  title="Hand length"
+                  value="380"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="handTailLength"
+                  placeholder="Hand tail length"
+                  data-bs-toggle="tooltip"
+                  title="Hand tail length"
+                  value="15"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="handWidth"
+                  placeholder="Hand width"
+                  data-bs-toggle="tooltip"
+                  title="Hand width"
+                  value="10"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingArc">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseArc"
+            aria-expanded="false"
+            aria-controls="collapseArc"
+          >
+            Arc Options
+          </button>
+        </h2>
+        <div
+          id="collapseArc"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingArc"
+          data-bs-parent="#accordionConfig"
+        >
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input
+                    type="color"
+                    class="form-control input-lg"
+                    id="arcOutlineColor"
+                    placeholder="Outline color"
+                    control="bootstrap-colorpicker"
+                    value="#000000"
+                    data-bs-toggle="tooltip"
+                    title="Arc outline color"
+                  />
+                  <input
+                    type="range"
+                    class="form-control form-range input-lg"
+                    id="arcOutlineOpacity"
+                    placeholder="Arc outline opacity"
+                    value="0"
+                    data-bs-toggle="tooltop"
+                    title="Arc outline opacity"
+                    min="0"
+                    max="255"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input
+                    type="color"
+                    class="form-control input-lg"
+                    id="arcFillColor"
+                    placeholder="Fill color"
+                    control="bootstrap-colorpicker"
+                    value="#000000"
+                    data-bs-toggle="tooltip"
+                    title="Arc fill color"
+                  />
+                  <input
+                    type="range"
+                    class="form-control form-range input-lg"
+                    id="arcFillOpacity"
+                    placeholder="Fill opacity"
+                    value="0"
+                    data-bs-toggle="tooltop"
+                    title="Arc fill opacity"
+                    min="0"
+                    max="255"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTick">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseTick"
+            aria-expanded="false"
+            aria-controls="collapseTick"
+          >
+            Tick Options
+          </button>
+        </h2>
+        <div
+          id="collapseTick"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingTick"
+          data-bs-parent="#accordionConfig"
+        >
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tickCount"
+                  placeholder="Count"
+                  data-bs-toggle="tooltip"
+                  title="Count"
+                  value="5"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tickLabels"
+                  placeholder="Labels (Use ; as separator)"
+                  data-bs-toggle="tooltip"
+                  title="Labels"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tickLength"
+                  placeholder="Length"
+                  data-bs-toggle="tooltip"
+                  title="Length"
+                  value="30"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tickWidth"
+                  placeholder="Width"
+                  data-bs-toggle="tooltip"
+                  title="Wdith"
+                  value="10"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tickLabelCssFont"
+                  placeholder="CSS font"
+                  data-bs-toggle="tooltip"
+                  title="CSS font"
+                  value="italic 40px Calibri"
+                />
+              </div>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input
+                    type="color"
+                    class="form-control input-lg"
+                    id="tickLabelColor"
+                    placeholder="Color"
+                    control="bootstrap-colorpicker"
+                    value="#000000"
+                    data-bs-toggle="tooltip"
+                    title="Color"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tickLabelRadius"
+                  placeholder="Label radius"
+                  data-bs-toggle="tooltip"
+                  title="Label radius"
+                  value="335"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTime">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseTime"
+            aria-expanded="false"
+            aria-controls="collapseTime"
+          >
+            Time Options
+          </button>
+        </h2>
+        <div
+          id="collapseTime"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingTime"
+          data-bs-parent="#accordionConfig"
+        >
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="countdownSeconds"
+                  placeholder="Countdown seconds"
+                  data-bs-toggle="tooltip"
+                  title="Countdown seconds"
+                  value="300"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="timeFormat"
+                  placeholder="Format"
+                  data-bs-toggle="tooltip"
+                  title="Format"
+                  value="hh:mm:ss.S"
+                />
+              </div>
+              <div class="col-sm-4">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="timeCssFont"
+                  placeholder="CSS font"
+                  data-bs-toggle="tooltip"
+                  title="CSS font"
+                  value="40px Calibri"
+                />
+              </div>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input
+                    type="color"
+                    class="form-control input-lg"
+                    id="timeColor"
+                    placeholder="Time color"
+                    control="bootstrap-colorpicker"
+                    value="#000000"
+                    data-bs-toggle="tooltip"
+                    title="Time color"
+                  />
+                  <input
+                    type="range"
+                    class="form-control form-range input-lg"
+                    id="timeColorOpacity"
+                    placeholder="Time opacity"
+                    value="255"
+                    data-bs-toggle="tooltop"
+                    title="Time opacity"
+                    min="0"
+                    max="255"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-text">Position: </span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="timeHPosition"
+                    placeholder="centered"
+                    data-bs-toggle="tooltip"
+                    title="Horizontal position"
+                  />
+                  <span class="input-group-text">x</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="timeVPosition"
+                    placeholder="centered"
+                    data-bs-toggle="tooltip"
+                    title="Vertical position"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingStyle">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseStyle"
+            aria-expanded="false"
+            aria-controls="collapseStyle"
           >
             Style
           </button>
         </h2>
         <div
-          id="collapseTwo"
+          id="collapseStyle"
           class="accordion-collapse collapse"
-          aria-labelledby="headingTwo"
-          data-bs-parent="#accordionExample"
+          aria-labelledby="headingStyle"
+          data-bs-parent="#accordionConfig"
         >
           <div class="accordion-body">
             <div class="card">
               <div class="card-header">CSS Font How-To</div>
-              <div class="card-body row">
+              <div class="row">
                 <div class="col">
                   <div>
                     Make your font:
@@ -471,59 +569,73 @@
         </div>
       </div>
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingThree">
+        <h2 class="accordion-header" id="headingOther">
           <button
             class="accordion-button collapsed"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#collapseThree"
+            data-bs-target="#collapseOther"
             aria-expanded="false"
-            aria-controls="collapseThree"
+            aria-controls="collapseOther"
           >
             Other
           </button>
         </h2>
         <div
-          id="collapseThree"
+          id="collapseOther"
           class="accordion-collapse collapse"
-          aria-labelledby="headingThree"
-          data-bs-parent="#accordionExample"
+          aria-labelledby="headingOther"
+          data-bs-parent="#accordionConfig"
+        >
+          <div class="accordion-body"></div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFinish">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseFinish"
+            aria-expanded="false"
+            aria-controls="collapseFinish"
+          >
+            Finish
+          </button>
+        </h2>
+        <div
+          id="collapseFinish"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingFinish"
+          data-bs-parent="#accordionConfig"
         >
           <div class="accordion-body">
-            <strong>This is the third item's accordion body.</strong> It is hidden by default, until
-            the collapse plugin adds the appropriate classes that we use to style each element.
-            These classes control the overall appearance, as well as the showing and hiding via CSS
-            transitions. You can modify any of this with custom CSS or overriding our default
-            variables. It's also worth noting that just about any HTML can go within the
-            <code>.accordion-body</code>, though the transition does limit overflow.
+            <button id="preview">Preview @ 10x</button>
+            <button id="download">Download</button>
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                id="progressBarPrepare"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+              <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                id="progressBarCompress"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <button id="preview">Preview @ 10x</button>
-    <button id="download">Download</button>
-    <div class="progress">
-      <div
-        class="progress-bar"
-        role="progressbar"
-        id="progressBarPrepare"
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></div>
-      <div
-        class="progress-bar bg-success"
-        role="progressbar"
-        id="progressBarCompress"
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></div>
-    </div>
-
     <canvas id="canvas"></canvas>
-    <input type="range" class="form-range" min="0" max="0" id="sampleFrame" />
 
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <!-- JavaScript Bundle with Popper -->
