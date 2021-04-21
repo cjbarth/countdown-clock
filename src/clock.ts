@@ -1,4 +1,4 @@
-import {Duration} from 'luxon'
+import { Duration } from "luxon";
 
 export interface ClockOptions {
   hResolution: number;
@@ -31,6 +31,8 @@ export interface ClockOptions {
   opacity: string;
   backgroundColor: string;
   backgroundColorOpacity: string;
+  backgroundImage: File;
+  backgroundAudio: File;
   countdownSeconds: number;
 }
 
@@ -82,8 +84,10 @@ export class Clock {
   }
 
   drawTicks(color: string): void {
+    // Move it over half the width, because the tick width is split around the center
     const x = this.options.hPosition - this.options.tickWidth / 2;
-    const y = this.options.vPosition - this.options.clockRadius + (this.options.lineWidth / 2);
+    // Move it 'up' half a line width so it touches the frame, not covers it
+    const y = this.options.vPosition - this.options.clockRadius + this.options.lineWidth / 2;
 
     this.ctx.fillStyle = color;
     for (let r = 0; r < Math.TAU; r += (1 / this.options.tickCount) * Math.TAU) {
@@ -130,7 +134,7 @@ export class Clock {
       this.options.vPosition,
       this.options.clockRadius,
       -(Math.TAU / 4),
-      arcRadians - (Math.TAU / 4)
+      arcRadians - Math.TAU / 4
     );
 
     // The wrapping `save`/`restore` is to undo the effects of the `clip`.
@@ -150,11 +154,20 @@ export class Clock {
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     this.ctx.fillStyle = this.options.timeColor + this.options.timeColorOpacity;
-    this.ctx.fillText(
-      text,
-      this.options.timeHPosition,
-      this.options.timeVPosition
-    );
+    this.ctx.fillText(text, this.options.timeHPosition, this.options.timeVPosition);
+  }
+
+  async drawBackground(file: File): Promise<void> {
+    return new Promise((resolve) => {
+      const url = window.URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        this.ctx.drawImage(img, 0, 0);
+        window.URL.revokeObjectURL(url);
+        resolve();
+      };
+      img.src = url;
+    });
   }
 
   clear(): void {
@@ -170,12 +183,15 @@ export class Clock {
     return duration.toFormat(this.options.timeFormat);
   }
 
-  renderFrame(frameNumber: number): void {
-    const t = this.getTimeText((frameNumber) * this.secondsPerFrame);
-    const arcRadians: number = (frameNumber) * this.radiansPerFrame;
+  async renderFrame(frameNumber: number): Promise<void> {
+    const t = this.getTimeText(frameNumber * this.secondsPerFrame);
+    const arcRadians: number = frameNumber * this.radiansPerFrame;
     const color: string = this.options.color + this.options.opacity;
 
     this.clear();
+    if (this.options.backgroundImage) {
+      await this.drawBackground(this.options.backgroundImage);
+    }
     this.drawColorWedge(
       arcRadians,
       this.options.arcFillColor + this.options.arcFillOpacity,

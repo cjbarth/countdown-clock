@@ -8,8 +8,8 @@ export class Transcoder {
   private frames: string[] = [];
 
   public constructor(progress?: ProgressCallback) {
-    const options:FFmpeg.CreateFFmpegOptions = {
-      log: true
+    const options: FFmpeg.CreateFFmpegOptions = {
+      log: true,
     };
 
     if (progress) {
@@ -32,7 +32,7 @@ export class Transcoder {
   }
 
   public addFrame(canvasElem: HTMLCanvasElement, statusCallback: StatusCallback): Promise<this> {
-    const myPromise: Promise<this> = new Promise((resolve, reject) => {
+    const myPromise: Promise<this> = new Promise((resolve) => {
       setTimeout(() => {
         resolve(this);
       });
@@ -54,11 +54,11 @@ export class Transcoder {
       return this;
     });
 
-    return myPromise
+    return myPromise;
   }
 
-  public async addAudio(filePath: string): Promise<this> {
-    this.ffmpeg.FS("writeFile", "audio.ogg", await FFmpeg.fetchFile(filePath));
+  public async addAudio(file: string | Buffer | Blob | File): Promise<this> {
+    this.ffmpeg.FS("writeFile", "audio.ogg", await FFmpeg.fetchFile(file));
 
     return this;
   }
@@ -98,6 +98,7 @@ export class Transcoder {
 
   public clearData(): void {
     // ffmpeg.FS("unlink", "audio.ogg");
+    this.ffmpeg.FS("unlink", "audio.ogg");
 
     this.frames.forEach((frameFileName) => {
       this.ffmpeg.FS("unlink", frameFileName);

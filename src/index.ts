@@ -71,6 +71,8 @@ const getOptions = (): clock.ClockOptions => {
     backgroundColorOpacity: (
       "00" + parseInt($("#backgroundColorOpacity").val() + "", 10).toString(16)
     ).slice(-2),
+    backgroundImage: $("#backgroundImage").prop("files")[0],
+    backgroundAudio: $("#backgroundAudio").prop("files")[0],
     countdownSeconds: parseInt($("#countdownSeconds").val() + "", 10),
   };
 
@@ -138,6 +140,8 @@ getDownloadButton().addEventListener("click", async () => {
     console.log(status);
   });
 
+  await transcoder.addAudio(myClock.options.backgroundAudio);
+
   for (let frame = 0; frame <= myClock.frameCount; frame++) {
     myClock.renderFrame(frame);
 
@@ -153,7 +157,7 @@ getDownloadButton().addEventListener("click", async () => {
 
   const video: Uint8Array = await transcoder.transcode(
     myClock.options.countdownSeconds,
-    false,
+    !!myClock.options.backgroundAudio,
     (status: string) => {
       console.log(status);
     }
